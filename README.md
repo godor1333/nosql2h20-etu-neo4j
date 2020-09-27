@@ -11,3 +11,6 @@
 For windows docker toolbox:
 1.docker-machine ip default
 Для получения открытого ip адреса виртуальной машины docker, который нужно использовать вместо localhost.
+
+### Screencast
+![](https://github.com/moevm/nosql2h20-etu-neo4j/blob/init_project/screenscast/Zapis_ekrana_2020-09-26_v_21_41_54.gif)
