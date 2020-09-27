@@ -7,3 +7,7 @@
 1. Find ID of the container with the web application.
 1. Apply constraints or indexes by ```docker exec -it 9ed93c3e921a neomodel_install_labels uemployees/models.py --db bolt://neo4j:@neo4j:7687```
 1. Now service is available at **127.0.0.1:8000**
+
+For windows docker toolbox:
+1.docker-machine ip default
+Для получения открытого ip адреса виртуальной машины docker, который нужно использовать вместо localhost.
