@@ -1,10 +1,8 @@
 from neomodel import (
     StructuredNode,
-    IntegerProperty
+    StringProperty
 )
 
 
 class Faculty(StructuredNode):
-    number = IntegerProperty(unique_index=True, required=True)
-    num_of_students = IntegerProperty(index=True, default=0)
-c
+    name = StringProperty(unique_index=True, required=True, max_length=50)
