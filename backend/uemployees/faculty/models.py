@@ -1,10 +1,13 @@
 from neomodel import (
     StructuredNode,
-    IntegerProperty
+    StringProperty,
+    RelationshipTo
 )
 
 
 class Faculty(StructuredNode):
-    number = IntegerProperty(unique_index=True, required=True)
-    num_of_students = IntegerProperty(index=True, default=0)
-c
+    name = StringProperty(unique_index=True, max_length=200)
+    departments = RelationshipTo(
+        'uemployees.department.models.Department',
+        'DEPARTMENT_OF_FACULTY'
+    )

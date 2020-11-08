@@ -2,7 +2,8 @@ from flask import Flask
 from flask_restful import Api
 
 from uemployees.db import init_db
-from uemployees.views import GroupView
+from uemployees.faculty.views import FacultyView
+from uemployees.department.views import DepartmentView
 
 
 init_db()
@@ -13,7 +14,8 @@ app.config['BUNDLE_ERRORS'] = True
 api = Api(app)
 
 
-api.add_resource(GroupView, '/groups/')
+api.add_resource(FacultyView, '/faculties/')
+api.add_resource(DepartmentView, '/departments/')
 
 
 if __name__ == '__main__':
