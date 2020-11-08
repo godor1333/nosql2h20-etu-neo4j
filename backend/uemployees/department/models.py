@@ -5,4 +5,4 @@ from neomodel import (
 
 
 class Department(StructuredNode):
-    name = StringProperty(unique_index=True, max_length=50)
+    name = StringProperty(unique_index=True, max_length=200)

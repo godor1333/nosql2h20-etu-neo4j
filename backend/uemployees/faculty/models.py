@@ -6,9 +6,8 @@ from neomodel import (
 
 
 class Faculty(StructuredNode):
-    name = StringProperty(unique_index=True, max_length=50)
-    faculties = RelationshipTo(
+    name = StringProperty(unique_index=True, max_length=200)
+    departments = RelationshipTo(
         'uemployees.department.models.Department',
-        'DEPARTMENT_OF_FACULTY',
-        cardinality=One
+        'DEPARTMENT_OF_FACULTY'
     )

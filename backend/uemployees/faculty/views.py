@@ -10,7 +10,7 @@ from uemployees.faculty.models import Faculty
 
 class FacultyView(Resource):
     def get(self):
-        return [group.__properties__ for group in Faculty.nodes.all()]
+        return [faculty.__properties__ for faculty in Faculty.nodes.all()]
 
     # def post(self):
     #     faculty_args = get_faculty_parser()

@@ -4,6 +4,12 @@ services:
     image: neo4j:latest
     environment:
       - NEO4J_AUTH=none
+    volumes:
+      - ./neo4j/conf:/conf
+      - ./neo4j/data:/data
+      - ./neo4j/import:/import
+      - ./neo4j/logs:/logs
+      - ./neo4j/plugins:/plugins
     ports:
       - '7474:7474'
       - '7473:7473'
