@@ -4,39 +4,24 @@ from flask_restful import (
 )
 from neomodel.exception import UniqueProperty
 
-from uemployees.models import Group
+from uemployees.faculty.models import Faculty
+from uemployees.faculty.parser import faculty_args
 
 
-class GroupView(Resource):
+class FacultyView(Resource):
     def get(self):
-        return [group.__properties__ for group in Group.nodes.all()]
+        return [group.__properties__ for group in Faculty.nodes.all()]
 
     def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument(
-            'number',
-            type=int,
-            required=True,
-            help='Number of the group is required and must be int'
-        )
-        parser.add_argument(
-            'num_of_students',
-            type=int,
-            required=True,
-            help='Number of students in the group is required and must be int'
-        )
-        args = parser.parse_args()
-        print(args)
-        new_group = {
-            'number': args['number'],
-            'num_of_students': args['num_of_students']
+        new_faculty = {
+            'name': faculty_args['name'],
         }
 
         try:
-            group = Group(**new_group).save()
+            faculty = Faculty(**new_faculty).save()
         except UniqueProperty as e:
             return {
                 "error": str(e)
             }, 400
 
-        return group.__properties__, 201
+        return faculty.__properties__, 201
