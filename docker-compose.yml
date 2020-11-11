@@ -15,3 +15,11 @@ services:
       - '8000:5000'
     depends_on:
       - neo4j
+  frontend:
+    build: ./frontend
+    command: node server.js
+    ports:
+      - 3000:3000
+    depends_on:
+      - web
+    hostname: localhost
