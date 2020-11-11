@@ -1,0 +1,17 @@
+{
+  "name": "etu-neo4j",
+  "version": "1.0.0",
+  "description": "etu-neo4j",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "consolidate": "^0.16.0",
+    "express": "^4.17.1",
+    "html": "^1.0.0",
+    "mustache": "^4.0.1"
+  }
+}
