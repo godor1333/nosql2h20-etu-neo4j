@@ -1,0 +1,42 @@
+MATCH (n) DETACH DELETE n;
+
+CREATE CONSTRAINT constraint_faculty ON (f: Faculty) ASSERT f.id IS UNIQUE;
+CREATE CONSTRAINT constraint_department ON (d: Department)  ASSERT d.id IS UNIQUE;
+CREATE CONSTRAINT constraint_employee ON (e: Employee) ASSERT e.id IS UNIQUE;
+CREATE CONSTRAINT constraint_publication ON (p: Publication) ASSERT p.id IS UNIQUE;
+CREATE CONSTRAINT constraint_degree ON (d: Degree) ASSERT d.id IS UNIQUE;
+CREATE CONSTRAINT constraint_discipline ON (d: Discipline) ASSERT d.id IS UNIQUE;
+
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKHVya5zQn0Ny5_14xZ7gltguOxBSVNpZ7t0trdbPaIRugIx8tkylzbohgwGvQJO86jdPLZNkpWpvi/pub?gid=0&single=true&output=csv" AS line
+MERGE (f: Faculty {id: toInteger(line.id), name: line.name});
+
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKHVya5zQn0Ny5_14xZ7gltguOxBSVNpZ7t0trdbPaIRugIx8tkylzbohgwGvQJO86jdPLZNkpWpvi/pub?gid=894775927&single=true&output=csv" AS line
+MATCH (f: Faculty {id: toInteger(line.id_faculty)})
+MERGE (d: Department {id:toInteger(line.id), name:line.name})
+MERGE (f)-[:DEPARTMENT_OF_FACULTY]->(d);
+
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKHVya5zQn0Ny5_14xZ7gltguOxBSVNpZ7t0trdbPaIRugIx8tkylzbohgwGvQJO86jdPLZNkpWpvi/pub?gid=214400289&single=true&output=csv" AS line
+MERGE (e: Employee {id:toInteger(line.id), name: line.name, photo_url:line.photo_url, email:line.email, education:line.education});
+
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKHVya5zQn0Ny5_14xZ7gltguOxBSVNpZ7t0trdbPaIRugIx8tkylzbohgwGvQJO86jdPLZNkpWpvi/pub?gid=424926872&single=true&output=csv" AS line
+MATCH (d:Department {id:toInteger(line.id_department)}),(e:Employee {id:toInteger(line.id_employee)})
+CREATE (d)-[:WORK_AT_DEPARTMENT {job_title: line.job_title}]->(e);
+
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKHVya5zQn0Ny5_14xZ7gltguOxBSVNpZ7t0trdbPaIRugIx8tkylzbohgwGvQJO86jdPLZNkpWpvi/pub?gid=176689214&single=true&output=csv" AS line
+MATCH (e: Employee {id: toInteger(line.id_employee)})
+MERGE (p: Publication {id:toInteger(line.id), content:line.content})
+MERGE (e)-[:EMPLOYEE_HAS_PUBLICATION]->(p);
+
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKHVya5zQn0Ny5_14xZ7gltguOxBSVNpZ7t0trdbPaIRugIx8tkylzbohgwGvQJO86jdPLZNkpWpvi/pub?gid=511928090&single=true&output=csv" AS line
+MERGE (d: Degree {id:toInteger(line.id), content: line.content});
+
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKHVya5zQn0Ny5_14xZ7gltguOxBSVNpZ7t0trdbPaIRugIx8tkylzbohgwGvQJO86jdPLZNkpWpvi/pub?gid=678265208&single=true&output=csv" AS line
+MATCH (e:Employee {id:toInteger(line.id_employee)}),(d:Degree {id:toInteger(line.id_degree)})
+CREATE (e)-[:EMPLOYEE_HAS_DEGREE]->(d);
+
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKHVya5zQn0Ny5_14xZ7gltguOxBSVNpZ7t0trdbPaIRugIx8tkylzbohgwGvQJO86jdPLZNkpWpvi/pub?gid=1262507770&single=true&output=csv" AS line
+MERGE (d: Discipline {id:toInteger(line.id), name: line.name});
+
+LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKHVya5zQn0Ny5_14xZ7gltguOxBSVNpZ7t0trdbPaIRugIx8tkylzbohgwGvQJO86jdPLZNkpWpvi/pub?gid=607722125&single=true&output=csv" AS line
+MATCH (e:Employee {id:toInteger(line.id_employee)}),(d:Discipline {id:toInteger(line.id_discipline)})
+CREATE (e)-[:TEACH_A_DISCIPLINE {group:line.group, time:line.time, auditorium:line.auditorium}]->(d);
