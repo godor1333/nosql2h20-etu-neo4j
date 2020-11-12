@@ -2,70 +2,161 @@ import os
 
 from flask_restful import Resource
 from flask import send_file
+from neomodel import db
 from openpyxl import Workbook
+
+from uemployees.faculty.models import Faculty
+from uemployees.department.models import Department
+from uemployees.employee.models import Employee
+from uemployees.degree.models import Degree
+from uemployees.discipline.models import Discipline
 
 
 def createFacultySheet(wb):
-    faculty = wb.create_sheet('faculty')
-    faculty['A1'] = 'id'
-    faculty['B1'] = 'name'
+    facultySheet = wb.create_sheet('faculty')
+    facultySheet['A1'] = 'id'
+    facultySheet['B1'] = 'name'
+
+    i = 2
+    for faculty in Faculty.nodes.all():
+        facultySheet['A{}'.format(i)] = faculty.id
+        facultySheet['B{}'.format(i)] = faculty.name
+        i += 1
 
 
 def createDepartmentSheet(wb):
-    department = wb.create_sheet('department')
-    department['A1'] = 'id'
-    department['B1'] = 'name'
-    department['C1'] = "id_faculty"
+    departmentSheet = wb.create_sheet('department')
+    departmentSheet['A1'] = 'id'
+    departmentSheet['B1'] = 'name'
+    departmentSheet['C1'] = "id_faculty"
+
+    i = 2
+    for faculty in Faculty.nodes.all():
+        for department in faculty.departments.all():
+            departmentSheet['A{}'.format(i)] = department.id
+            departmentSheet['B{}'.format(i)] = department.name
+            departmentSheet['C{}'.format(i)] = faculty.id
+            i += 1
 
 
 def createEmployeeSheet(wb):
-    department = wb.create_sheet('employee')
-    department['A1'] = 'id'
-    department['B1'] = 'name'
-    department['C1'] = 'photo_url'
-    department['D1'] = 'email'
-    department['E1'] = 'education'
+    employeeSheet = wb.create_sheet('employee')
+    employeeSheet['A1'] = 'id'
+    employeeSheet['B1'] = 'name'
+    employeeSheet['C1'] = 'photo_url'
+    employeeSheet['D1'] = 'email'
+    employeeSheet['E1'] = 'education'
+
+    i = 2
+    for employee in Employee.nodes.all():
+        employeeSheet['A{}'.format(i)] = employee.id
+        employeeSheet['B{}'.format(i)] = employee.name
+        employeeSheet['C{}'.format(i)] = employee.photo_url
+        employeeSheet['D{}'.format(i)] = employee.email
+        employeeSheet['E{}'.format(i)] = employee.education
+        i += 1
 
 
 def createEmployeeDepartmentSheet(wb):
-    department = wb.create_sheet('employee_department')
-    department['A1'] = 'id_department'
-    department['B1'] = 'id_employee'
-    department['C1'] = 'job_title'
+    employeeDepartmentSheet = wb.create_sheet('employee_department')
+    employeeDepartmentSheet['A1'] = 'id_department'
+    employeeDepartmentSheet['B1'] = 'id_employee'
+    employeeDepartmentSheet['C1'] = 'job_title'
+
+    i = 2
+    for department in Department.nodes.all():
+        for employee in department.employees.all():
+            employeeDepartmentSheet['A{}'.format(i)] = department.id
+            employeeDepartmentSheet['B{}'.format(i)] = employee.id
+            employeeDepartmentSheet['C{}'.format(i)] = department.employees.relationship(employee).job_title
+            i += 1
 
 
 def createPublicationSheet(wb):
-    department = wb.create_sheet('publication')
-    department['A1'] = 'id'
-    department['B1'] = 'content'
-    department['C1'] = 'id_employee'
+    publicationSheet = wb.create_sheet('publication')
+    publicationSheet['A1'] = 'id'
+    publicationSheet['B1'] = 'content'
+    publicationSheet['C1'] = 'id_employee'
+
+    i = 2
+    for employee in Employee.nodes.all():
+        for publication in employee.publications.all():
+            publicationSheet['A{}'.format(i)] = publication.id
+            publicationSheet['B{}'.format(i)] = publication.content
+            publicationSheet['C{}'.format(i)] = employee.id
+            i += 1
 
 
 def createDegreeSheet(wb):
-    department = wb.create_sheet('degree')
-    department['A1'] = 'id'
-    department['B1'] = 'content'
+    degreeSheet = wb.create_sheet('degree')
+    degreeSheet['A1'] = 'id'
+    degreeSheet['B1'] = 'content'
+
+    i = 2
+    for degree in Degree.nodes.all():
+        degreeSheet['A{}'.format(i)] = degree.id
+        degreeSheet['B{}'.format(i)] = degree.content
+        i += 1
 
 
 def createEmployeeDegreeSheet(wb):
-    department = wb.create_sheet('employee_degree')
-    department['A1'] = 'id_employee'
-    department['B1'] = 'id_degree'
+    employeeDegreeSheet = wb.create_sheet('employee_degree')
+    employeeDegreeSheet['A1'] = 'id_employee'
+    employeeDegreeSheet['B1'] = 'id_degree'
+
+    i = 2
+    for employee in Employee.nodes.all():
+        for degree in employee.degrees.all():
+            employeeDegreeSheet['A{}'.format(i)] = employee.id
+            employeeDegreeSheet['B{}'.format(i)] = degree.id
+            i += 1
 
 
 def createDisciplineSheet(wb):
-    department = wb.create_sheet('discipline')
-    department['A1'] = 'id'
-    department['B1'] = 'name'
+    disciplineSheet = wb.create_sheet('discipline')
+    disciplineSheet['A1'] = 'id'
+    disciplineSheet['B1'] = 'name'
+
+    i = 2
+    for discipline in Discipline.nodes.all():
+        disciplineSheet['A{}'.format(i)] = discipline.id
+        disciplineSheet['B{}'.format(i)] = discipline.name
+        i += 1
+
+
+def getLessons(emp_id, dis_id):
+    lessons = [
+        lesson[0].items()
+        for lesson in db.cypher_query(
+            f'MATCH (e:Employee)'
+            f'-[r:TEACH_A_DISCIPLINE]->(d:Discipline) '
+            f'WHERE id(e)={emp_id} AND id(d)={dis_id} '
+            f'RETURN r;'
+        )[0]
+    ]
+
+    return lessons
 
 
 def createEmployeeDisciplineSheet(wb):
-    department = wb.create_sheet('employee_discipline')
-    department['A1'] = 'id_employee'
-    department['B1'] = 'id_discipline'
-    department['C1'] = 'group'
-    department['D1'] = 'time'
-    department['E1'] = 'auditorium'
+    employeeDisciplineSheet = wb.create_sheet('employee_discipline')
+    employeeDisciplineSheet['A1'] = 'id_employee'
+    employeeDisciplineSheet['B1'] = 'id_discipline'
+    employeeDisciplineSheet['C1'] = 'group'
+    employeeDisciplineSheet['D1'] = 'time'
+    employeeDisciplineSheet['E1'] = 'auditorium'
+
+    i = 2
+    for employee in Employee.nodes.all():
+        for discipline in employee.disciplines.all():
+            employeeDisciplineSheet['A{}'.format(i)] = employee.id
+            employeeDisciplineSheet['B{}'.format(i)] = discipline.id
+
+            rel = employee.disciplines.relationship(discipline)
+            employeeDisciplineSheet['C{}'.format(i)] = rel.group
+            employeeDisciplineSheet['D{}'.format(i)] = rel.time
+            employeeDisciplineSheet['E{}'.format(i)] = rel.auditorium
+            i += 1
 
 
 def createExportFile(file_name):
