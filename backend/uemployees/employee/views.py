@@ -39,6 +39,7 @@ class EmployeeView(Resource):
         for employee in employees:
             response.append({
                 **employee.__properties__,
+                'job_title': department.employees.relationship(employee).job_title,
                 'disciplines': [
                     {
                         'discipline': discipline.__properties__,

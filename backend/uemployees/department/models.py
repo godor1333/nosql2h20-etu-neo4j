@@ -7,7 +7,7 @@ from neomodel import (
 
 
 class WorkAtDepartment(StructuredRel):
-    job_title = StringProperty(required=True, max_length=30)
+    job_title = StringProperty(required=True, max_length=200)
 
 
 class Department(StructuredNode):
