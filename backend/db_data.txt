@@ -39,4 +39,4 @@ MERGE (d: Discipline {id:toInteger(line.id), name: line.name});
 
 LOAD CSV WITH HEADERS FROM "https://docs.google.com/spreadsheets/d/e/2PACX-1vRKHVya5zQn0Ny5_14xZ7gltguOxBSVNpZ7t0trdbPaIRugIx8tkylzbohgwGvQJO86jdPLZNkpWpvi/pub?gid=607722125&single=true&output=csv" AS line
 MATCH (e:Employee {id:toInteger(line.id_employee)}),(d:Discipline {id:toInteger(line.id_discipline)})
-CREATE (e)-[:TEACH_A_DISCIPLINE {group:line.group, time:line.time, auditorium:line.auditorium}]->(d);
+CREATE (e)-[:TEACH_A_DISCIPLINE {group:toInteger(line.group), time:line.time, auditorium:line.auditorium}]->(d);
