@@ -22,7 +22,7 @@ api = Api(app)
 api.add_resource(FacultyView, '/faculties/')
 api.add_resource(DepartmentView, '/departments/')
 api.add_resource(EmployeeView, '/employees/')
-api.add_resource(ExportView, '/export/')
+api.add_resource(ExportView, '/export_document/')
 
 
 if __name__ == '__main__':
