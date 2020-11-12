@@ -6,6 +6,7 @@ from uemployees.db import init_db
 from uemployees.faculty.views import FacultyView
 from uemployees.department.views import DepartmentView
 from uemployees.employee.views import EmployeeView
+from uemployees.export.views import ExportView
 
 
 init_db()
@@ -21,6 +22,7 @@ api = Api(app)
 api.add_resource(FacultyView, '/faculties/')
 api.add_resource(DepartmentView, '/departments/')
 api.add_resource(EmployeeView, '/employees/')
+api.add_resource(ExportView, '/export/')
 
 
 if __name__ == '__main__':
