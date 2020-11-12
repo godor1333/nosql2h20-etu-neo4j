@@ -1,0 +1,15 @@
+header{
+    background-color: #9370DB;
+    height: 80px;
+    padding: 15px;
+}
+a{
+    text-align: center;
+    display: block;
+    color: black;
+    font-size: 17px;
+}
+
+a:hover{
+    color: black;
+}

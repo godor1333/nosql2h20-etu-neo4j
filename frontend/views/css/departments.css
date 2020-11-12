@@ -1,0 +1,54 @@
+.page_title{
+    margin-top: 20px;
+}
+
+.search{
+    margin-top: 30px;
+    border-radius: 10px;
+}
+
+.search:focus{
+    outline: none;
+}
+
+.filter, .addition{
+    margin-top: 30px;
+    width: 100px;
+    border-radius: 10px;
+}
+
+button:hover{
+    background-color: #9370DB;
+}
+
+.filter:focus{
+    outline: none;
+}
+
+.addition:focus{
+    outline: none;
+}
+
+.content{
+    margin-top: 30px;
+}
+
+.name{
+    text-align: center;
+    font-size: 24px;
+}
+
+.name:hover{
+    color: #9370DB;
+}
+
+.position{
+    text-align: center;
+    font-size: 20px;
+}
+
+.photo{
+    width: 100%;
+    border-radius: 50px;
+    height: 100px;
+}

@@ -1,0 +1,36 @@
+.employee_name{
+    margin-top: 20px;
+}
+
+.edit{
+    margin-top: 30px;
+    width: 135px;
+    border-radius: 10px;
+}
+
+.edit:hover{
+    background-color: #9370DB;
+}
+
+.edit:focus{
+    outline: none;
+}
+
+.table {
+    width: 85%;
+    margin-top: 30px;
+    margin-left: 90px;
+    margin-right: 100px;
+}
+
+th{
+    width: 30%;
+}
+
+ul{
+    padding: 0;
+}
+
+li {
+    list-style-type: none;
+}
