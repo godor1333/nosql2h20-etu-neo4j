@@ -1,7 +1,8 @@
 from neomodel import (
     StructuredNode,
     StringProperty,
-    StructuredRel
+    StructuredRel,
+    RelationshipTo
 )
 
 
