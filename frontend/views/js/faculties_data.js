@@ -59,8 +59,12 @@ for (var i=0; i<data.length; i++) {
     for (var j = 0; j < data[i].departments.length; j++) {
         var li = document.createElement("li");
         ul.appendChild(li);
+        var a=document.createElement("a");
+        li.appendChild(a);
+        a.href="/departments?id="+data[i].departments[j].id + "&name=" + data[i].departments[j].name;
+        a.classList.add("departments");
         var departmentNameContent = document.createTextNode(data[i].departments[j].name);
-        li.appendChild(departmentNameContent);
+        a.appendChild(departmentNameContent);
     }
 
     collapse(i);
