@@ -21,6 +21,14 @@ def getLessons(emp_id, dis_id):
     } for lesson in lessons]
 
 
+def getUniqueDisciplines(desciplines):
+    unique_disciplines = []
+    for discipline in desciplines:
+        if discipline not in unique_disciplines:
+            unique_disciplines.append(discipline)
+    return unique_disciplines
+
+
 class EmployeeView(Resource):
     def get(self):
         response = []
@@ -36,6 +44,7 @@ class EmployeeView(Resource):
 
         employees = department.employees.all()
 
+        disciplines = []
         for employee in employees:
             response.append({
                 **employee.__properties__,
@@ -44,7 +53,7 @@ class EmployeeView(Resource):
                     {
                         'discipline': discipline.__properties__,
                         'lessons': getLessons(employee.id, discipline.id)
-                    } for discipline in employee.disciplines.all()
+                    } for discipline in getUniqueDisciplines(employee.disciplines.all())
                 ],
                 'degrees': [
                     degree.__properties__ for degree in employee.degrees.all()
