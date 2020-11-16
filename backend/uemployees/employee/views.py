@@ -44,7 +44,6 @@ class EmployeeView(Resource):
 
         employees = department.employees.all()
 
-        disciplines = []
         for employee in employees:
             response.append({
                 **employee.__properties__,
