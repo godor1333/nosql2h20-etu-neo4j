@@ -3,6 +3,8 @@ from flask import request
 from neomodel import db
 
 from uemployees.department.models import Department
+from uemployees.employee.models import Employee
+from uemployees.discipline.models import Discipline
 
 
 def getLessons(emp_id, dis_id):
@@ -29,7 +31,22 @@ def getUniqueDisciplines(desciplines):
     return unique_disciplines
 
 
-class EmployeeView(Resource):
+def getDiscipline(discipline_id):
+    discipline_node = db.cypher_query(
+            f'MATCH (e:Discipline) '
+            f'WHERE id(e)={discipline_id} '
+            f'RETURN e;'
+        )[0][0][0]
+
+    discipline = {
+        k: v for k, v in discipline_node.items()
+    }
+
+    discipline['id'] = discipline_node.id
+    return discipline
+
+
+class EmployeeListView(Resource):
     def get(self):
         response = []
 
@@ -64,5 +81,66 @@ class EmployeeView(Resource):
                     publication.__properties__ for publication in employee.publications.all()
                 ],
             })
+
+        return response
+
+
+class EmployeeView(Resource):
+    def get(self, employee_id):
+        try:
+            employee = Employee(id=int(employee_id))
+            employee.refresh()
+        except Exception:
+            return '', 400
+
+        try:
+            department = employee.department.all()[0]
+        except Exception:
+            return '', 400
+
+        response = {
+            **employee.__properties__,
+            'job_title': department.employees.relationship(employee).job_title,
+            'disciplines': [
+                {
+                    'discipline': discipline.__properties__,
+                    'lessons': getLessons(employee.id, discipline.id)
+                } for discipline in getUniqueDisciplines(employee.disciplines.all())
+            ],
+            'degrees': [
+                degree.__properties__ for degree in employee.degrees.all()
+            ],
+            'interests': [
+                interest.__properties__ for interest in employee.interests.all()
+            ],
+            'publications': [
+                publication.__properties__ for publication in employee.publications.all()
+            ],
+        }
+
+        return response
+
+
+class EmployeeScheduleView(Resource):
+    def get(self, employee_id):
+
+        args = request.args
+        discipline_id = args.get('discipline_id')
+
+        try:
+            employee = Employee(id=int(employee_id))
+            employee.refresh()
+        except Exception:
+            return '', 400
+
+        try:
+            discipline = getDiscipline(discipline_id)
+        except Exception:
+            return '', 400
+
+        response = {
+            'discipline': discipline,
+            'lessons': getLessons(employee.id, discipline['id'])
+        }
 
         return response

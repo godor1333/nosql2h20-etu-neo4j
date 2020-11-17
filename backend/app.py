@@ -5,7 +5,11 @@ from flask_cors import CORS, cross_origin
 from uemployees.db import init_db
 from uemployees.faculty.views import FacultyView
 from uemployees.department.views import DepartmentView
-from uemployees.employee.views import EmployeeView
+from uemployees.employee.views import (
+    EmployeeListView,
+    EmployeeView,
+    EmployeeScheduleView
+)
 
 
 init_db()
@@ -20,7 +24,9 @@ api = Api(app)
 
 api.add_resource(FacultyView, '/faculties/')
 api.add_resource(DepartmentView, '/departments/')
-api.add_resource(EmployeeView, '/employees/')
+api.add_resource(EmployeeScheduleView, '/employees/<employee_id>/schedule/')
+api.add_resource(EmployeeView, '/employees/<employee_id>')
+api.add_resource(EmployeeListView, '/employees/')
 
 
 if __name__ == '__main__':
