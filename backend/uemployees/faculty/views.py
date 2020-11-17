@@ -1,11 +1,6 @@
-from flask_restful import (
-    Resource,
-    reqparse
-)
-#from neomodel.exception import UniqueProperty
+from flask_restful import Resource
 
 from uemployees.faculty.models import Faculty
-#from uemployees.faculty.parser import get_faculty_parser
 
 
 class FacultyView(Resource):
