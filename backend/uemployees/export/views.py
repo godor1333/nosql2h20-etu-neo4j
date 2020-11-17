@@ -135,7 +135,17 @@ def getLessons(emp_id, dis_id):
         )[0]
     ]
 
-    return lessons
+    return [{
+        k: v for k, v in lesson
+    } for lesson in lessons]
+
+
+def getUniqueDisciplines(desciplines):
+    unique_disciplines = []
+    for discipline in desciplines:
+        if discipline not in unique_disciplines:
+            unique_disciplines.append(discipline)
+    return unique_disciplines
 
 
 def createEmployeeDisciplineSheet(wb):
@@ -148,15 +158,15 @@ def createEmployeeDisciplineSheet(wb):
 
     i = 2
     for employee in Employee.nodes.all():
-        for discipline in employee.disciplines.all():
-            employeeDisciplineSheet['A{}'.format(i)] = employee.id
-            employeeDisciplineSheet['B{}'.format(i)] = discipline.id
+        for discipline in getUniqueDisciplines(employee.disciplines.all()):
+            for lesson in getLessons(employee.id, discipline.id):
+                employeeDisciplineSheet['A{}'.format(i)] = employee.id
+                employeeDisciplineSheet['B{}'.format(i)] = discipline.id
 
-            rel = employee.disciplines.relationship(discipline)
-            employeeDisciplineSheet['C{}'.format(i)] = rel.group
-            employeeDisciplineSheet['D{}'.format(i)] = rel.time
-            employeeDisciplineSheet['E{}'.format(i)] = rel.auditorium
-            i += 1
+                employeeDisciplineSheet['C{}'.format(i)] = lesson['group']
+                employeeDisciplineSheet['D{}'.format(i)] = lesson['time']
+                employeeDisciplineSheet['E{}'.format(i)] = lesson['auditorium']
+                i += 1
 
 
 def createExportFile(file_name):
