@@ -4,8 +4,11 @@ from neomodel import (
     IntegerProperty,
     EmailProperty,
     StructuredRel,
-    RelationshipTo
+    RelationshipTo,
+    RelationshipFrom
 )
+
+from uemployees.department.models import WorkAtDepartment
 
 
 class TeachDiscipline(StructuredRel):
@@ -19,6 +22,11 @@ class Employee(StructuredNode):
     photo_url = StringProperty(max_length=200)
     email = EmailProperty(unique_index=True)
     education = StringProperty(required=True, max_length=50)
+    department = RelationshipFrom(
+        'uemployees.department.models.Department',
+        'WORK_AT_DEPARTMENT',
+        model=WorkAtDepartment
+    )
     disciplines = RelationshipTo(
         'uemployees.discipline.models.Discipline',
         'TEACH_A_DISCIPLINE',
