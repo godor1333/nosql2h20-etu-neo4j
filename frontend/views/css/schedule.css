@@ -1,0 +1,31 @@
+h2{
+    margin-top: 30px;
+}
+
+h3{
+    margin-top: 30px;
+}
+
+table{
+    margin-top: 30px;
+}
+
+th{
+    text-align: center;
+}
+
+td{
+    text-align: center;
+}
+
+.group{
+    width: 20%;
+}
+
+.time{
+    width: 60%;
+}
+
+.classroom{
+    width: 20%;
+}

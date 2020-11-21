@@ -1,0 +1,43 @@
+.content{
+    margin-top: 30px;
+}
+
+.content .row{
+    margin-top: 10px;
+}
+
+input{
+    border-radius: 10px;
+    width: 100%
+}
+
+input:focus{
+    outline: none;
+    border-color: #9370DB;
+}
+
+button{
+    border-radius: 10px;
+    width: 100px;
+}
+
+button:hover{
+    background-color: #9370DB;
+}
+
+button:focus{
+    outline: none;
+}
+
+img{
+    width: 20px;
+    height: 20px;
+}
+
+.save{
+    margin-left: 60px;
+}
+
+.schedule{
+    margin-left: 60px;
+}

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Расписание</title>
+
+    <script crossorigin="anonymous" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/schedule.css">
+</head>
+<body>
+    <div id="header"></div>
+    <script src="../js/header.js"></script>
+    <div class="container">
+        <h2 id = "discipline"></h2>
+        <h3 id = "name"></h3>
+        <table class="table table-bordered">
+            <thead>
+            <tr>
+                <th scope="col" class="group">Группа</th>
+                <th scope="col" class="time">Время</th>
+                <th scope="col" class="classroom">Аудиотрия</th>
+            </tr>
+            </thead>
+            <tbody id="tab_body">
+            </tbody>
+        </table>
+    </div>
+    <script src="../js/schedule_data.js "></script>
+</body>
+</html>
