@@ -62,7 +62,7 @@ for (var i = 0; i < data.length; i+=2) {
 
         var a = document.createElement("a");
         a.classList.add("name");
-        a.href = "#";
+        a.href = "/employee?id=" + data[i + j].id;
         a.innerText = data[i + j].name;
         col9.appendChild(a);
 

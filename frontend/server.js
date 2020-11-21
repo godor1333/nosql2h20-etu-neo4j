@@ -11,6 +11,9 @@ app.use(cors({origin:true,credentials: true}));
 app.engine('html', engines.mustache);
 var currentDepId = "0";
 var currentDepName = "";
+var currentEmployeeId = "0";
+var currentDisciplineId ="0";
+var currentEmployeeName = "";
 
 app.get('/', function(req, res){
     res.render('html/faculties.html');
@@ -35,7 +38,26 @@ app.get('/current/department/name', function (req, res) {
 });
 
 app.get('/employee', function (req, res) {
+    currentEmployeeId = req.param("id");
     res.render('html/employee.html');
+});
+
+app.get('/current/employee/name', function (req, res) {
+    res.send(currentEmployeeName);
+});
+
+app.get('/current/employee/id', function (req, res) {
+    res.send(currentEmployeeId);
+});
+
+app.get('/schedule', function (req, res) {
+    currentDisciplineId = req.param("id");
+    currentEmployeeName = req.param("name");
+    res.render('html/schedule.html');
+});
+
+app.get ('/current/schedule/id', function (req, res) {
+    res.send(currentDisciplineId);
 });
 
 app.get('/header.html', function(req, res){
