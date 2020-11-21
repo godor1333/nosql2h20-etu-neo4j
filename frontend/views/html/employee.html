@@ -14,8 +14,7 @@
     <div class="container">
         <div class="row">
             <div class="col-10">
-                <h2 class="employee_name">(Фамилия Имя Отчество)</h2>
-
+                <h2 class="employee_name"></h2>
             </div>
             <div class="col-2">
                 <button class="edit">Редактировать</button>
@@ -26,48 +25,38 @@
         <tbody>
         <tr>
             <th scope="row">Должность</th>
-            <td>Заведующий кафедрой</td>
+            <td class="tab_position"></td>
         </tr>
         <tr>
             <th scope="row">Ученая степень</th>
-            <td></td>
+            <td class="tab_academic_degree"></td>
         </tr>
         <tr>
             <th scope="row">Email</th>
-            <td></td>
+            <td class="tab_email"></td>
         </tr>
         <tr>
             <th scope="row">Преподаваемые дисциплины</th>
             <td>
                 <div class="row">
-                    <div class="col-11">
-                    <ul>
-                        <li>Программирование</li>
-                        <li>Криптография</li>
-                    </ul>
-                </div>
-                    <div class="col-1">
-                        <a href="#">
-                            <img src="https://img.icons8.com/material-sharp/24/000000/visible.png"/>
-                        </a>
-                        <a href="#">
-                            <img src="https://img.icons8.com/material-sharp/24/000000/visible.png"/>
-                        </a>
+                    <div class="col-11" id="discipline_list">
+                    </div>
+                    <div class="col-1" id="discipline_img">
                     </div>
                 </div>
             </td>
         </tr>
         <tr>
             <th scope="row">Образование</th>
-            <td></td>
+            <td class="education"></td>
         </tr>
         <tr>
             <th scope="row">Область профессиональных интересов</th>
-            <td></td>
+            <td class="interests"></td>
         </tr>
         <tr>
             <th scope="row">Публикации</th>
-            <td></td>
+            <td class="publications"></td>
         </tr>
         <tr>
             <th scope="row">Другие сведения</th>
@@ -75,5 +64,6 @@
         </tr>
         </tbody>
     </table>
+    <script src="../js/employee_data.js "></script>
 </body>
 </html>
