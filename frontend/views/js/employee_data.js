@@ -10,7 +10,21 @@ xhr.send();
 
 var currentEmployeeId = xhr.responseText;
 
-xhr.open('GET', serverUrl.concat("/employees/").concat(currentEmployeeId), false);
+xhr.open('GET', frontendUrl.concat('/current/department/id'), false);
+xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+xhr.setRequestHeader("Access-Control-Allow-Methods", "*");
+xhr.send();
+
+var currentDepartmentId = xhr.responseText;
+
+xhr.open(
+    'GET',
+    serverUrl.concat("/employees/")
+        .concat(currentEmployeeId)
+        .concat("/?department_id=")
+        .concat(currentDepartmentId),
+    false
+);
 xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
 xhr.setRequestHeader("Access-Control-Allow-Methods", "*");
 xhr.send();

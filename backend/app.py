@@ -31,7 +31,7 @@ api.add_resource(FacultyView, '/faculties/')
 api.add_resource(DepartmentView, '/departments/')
 api.add_resource(ExportView, '/export_document/')
 api.add_resource(EmployeeScheduleView, '/employees/<employee_id>/schedule/')
-api.add_resource(EmployeeView, '/employees/<employee_id>')
+api.add_resource(EmployeeView, '/employees/<employee_id>/')
 api.add_resource(EmployeeListView, '/employees/')
 
 api.add_resource(ParamsSearchView, '/searchparams')
