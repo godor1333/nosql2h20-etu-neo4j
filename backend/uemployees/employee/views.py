@@ -94,11 +94,10 @@ class EmployeeView(Resource):
             return '', 400
 
         args = request.args
-        department_id = args.get('department_id')
+        department_id = args.get('department_id', default=employee.department.all()[0].id)
 
         try:
             department = list(filter(lambda d: d.id == int(department_id), employee.department.all()))[0]
-            print(department)
         except Exception:
             return '', 400
 
