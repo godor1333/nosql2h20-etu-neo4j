@@ -20,8 +20,8 @@ class TeachDiscipline(StructuredRel):
 class Employee(StructuredNode):
     name = StringProperty(unique_index=True, max_length=50)
     photo_url = StringProperty(max_length=200)
-    email = EmailProperty(unique_index=True)
-    education = StringProperty(required=True, max_length=50)
+    email = EmailProperty()
+    education = StringProperty(max_length=50)
     department = RelationshipFrom(
         'uemployees.department.models.Department',
         'WORK_AT_DEPARTMENT',

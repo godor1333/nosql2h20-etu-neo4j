@@ -84,6 +84,31 @@ class EmployeeListView(Resource):
 
         return response
 
+    def post(self):
+        response = []
+
+        name = request.form.get('name')
+        email = request.form.get('email')
+        education = request.form.get('education')
+        job_title = request.form.get('job_title')
+        disciplines = request.form.get('disciplines')
+        degrees = request.form.get('degrees')
+        interests = request.form.get('interests')
+        publications = request.form.get('publications')
+
+        employee = Employee(
+            name=name,
+            email=email,
+            education=education,
+            job_title=job_title,
+        )
+        employee.save()
+
+        for discipline in disciplines:
+            
+
+        return response
+
 
 class EmployeeView(Resource):
     def get(self, employee_id):
