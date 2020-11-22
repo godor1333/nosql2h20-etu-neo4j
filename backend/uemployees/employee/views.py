@@ -1,10 +1,13 @@
 from flask_restful import Resource
-from flask import request
+from flask import request, redirect
 from neomodel import db
 
 from uemployees.department.models import Department
 from uemployees.employee.models import Employee
 from uemployees.discipline.models import Discipline
+from uemployees.degree.models import Degree
+from uemployees.interest.models import Interest
+from uemployees.publication.models import Publication
 
 
 def getLessons(emp_id, dis_id):
@@ -33,10 +36,10 @@ def getUniqueDisciplines(desciplines):
 
 def getDiscipline(discipline_id):
     discipline_node = db.cypher_query(
-            f'MATCH (e:Discipline) '
-            f'WHERE id(e)={discipline_id} '
-            f'RETURN e;'
-        )[0][0][0]
+        f'MATCH (e:Discipline) '
+        f'WHERE id(e)={discipline_id} '
+        f'RETURN e;'
+    )[0][0][0]
 
     discipline = {
         k: v for k, v in discipline_node.items()
@@ -85,29 +88,54 @@ class EmployeeListView(Resource):
         return response
 
     def post(self):
-        response = []
+        try:
+            name = request.form.get('name')
+            email = request.form.get('email')
+            education = request.form.get('education')
+            job_title = request.form.get('job_title')
+            disciplines = request.form.get('disciplines')
+            degrees = request.form.get('degrees')
+            interests = request.form.get('interests')
+            publications = request.form.get('publications')
 
-        name = request.form.get('name')
-        email = request.form.get('email')
-        education = request.form.get('education')
-        job_title = request.form.get('job_title')
-        disciplines = request.form.get('disciplines')
-        degrees = request.form.get('degrees')
-        interests = request.form.get('interests')
-        publications = request.form.get('publications')
+            employee = Employee(
+                name=name,
+                email=email,
+                education=education,
+                job_title=job_title,
+            )
+            employee.save()
 
-        employee = Employee(
-            name=name,
-            email=email,
-            education=education,
-            job_title=job_title,
-        )
-        employee.save()
+            for d in disciplines:
+                discipline = Discipline.nodes.get_or_none(name=d.discipline.name)
+                if not discipline:
+                    discipline = Discipline(name=d.discipline.name).save()
+                for lesson in disciplines.lessons:
+                    employee.disciplines.connect(discipline, {
+                        **lesson
+                    })
 
-        for discipline in disciplines:
-            
+            for d in degrees:
+                degree = Degree.nodes.get_or_none(name=d.content)
+                if not degree:
+                    degree = Discipline(name=d.content).save()
+                employee.degrees.connect(degree)
 
-        return response
+            for i in interests:
+                interest = Interest.nodes.get_or_none(name=i.content)
+                if not interest:
+                    interest = Interest(name=i.content).save()
+                employee.interests.connect(interest)
+
+            for p in publications:
+                publication = Publication.nodes.get_or_none(name=p.content)
+                if not publication:
+                    publication = Publication(name=p.content).save()
+                employee.publications.connect(publication)
+
+            return "success", 200
+        except Exception as e:
+            return e, 200
 
 
 class EmployeeView(Resource):
