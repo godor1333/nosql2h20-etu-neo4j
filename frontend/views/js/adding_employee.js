@@ -18,7 +18,7 @@ function save() {
     request.job_title = job_title.value;
 
     var academicDegree = document.getElementById("academic_degree");
-    request.academic_degree = academicDegree.value;
+    request.degree = academicDegree.value;
 
     var email = document.getElementById("email");
     request.email = email.value;
