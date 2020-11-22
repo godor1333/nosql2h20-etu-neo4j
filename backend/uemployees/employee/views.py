@@ -88,54 +88,57 @@ class EmployeeListView(Resource):
         return response
 
     def post(self):
-        try:
-            name = request.form.get('name')
-            email = request.form.get('email')
-            education = request.form.get('education')
-            job_title = request.form.get('job_title')
-            disciplines = request.form.get('disciplines')
-            degrees = request.form.get('degrees')
-            interests = request.form.get('interests')
-            publications = request.form.get('publications')
+        name = request.json.get('name')
+        email = request.json.get('email')
+        education = request.json.get('education')
+        job_title = request.json.get('job_title')
+        disciplines = request.json.get('disciplines')
+        degrees = request.json.get('degrees')
+        interests = request.json.get('interests')
+        publications = request.json.get('publications')
+        department = request.json.get('department')
 
-            employee = Employee(
-                name=name,
-                email=email,
-                education=education,
-                job_title=job_title,
-            )
-            employee.save()
+        employee = Employee(
+            name=name,
+            email=email,
+            education=education,
+            job_title=job_title,
+        )
+        employee.save()
 
-            for d in disciplines:
-                discipline = Discipline.nodes.get_or_none(name=d.discipline.name)
-                if not discipline:
-                    discipline = Discipline(name=d.discipline.name).save()
-                for lesson in disciplines.lessons:
-                    employee.disciplines.connect(discipline, {
-                        **lesson
-                    })
+        department = Department.get_or_none(name=department)
+        department.employees.connect(employee, {
+            'job_title': job_title
+        })
 
-            for d in degrees:
-                degree = Degree.nodes.get_or_none(name=d.content)
-                if not degree:
-                    degree = Discipline(name=d.content).save()
-                employee.degrees.connect(degree)
+        for d in disciplines:
+            discipline = Discipline.nodes.get_or_none(name=d['discipline']['name'])
+            if not discipline:
+                discipline = Discipline(name=d['discipline']['name']).save()
+            for lesson in d['lessons']:
+                employee.disciplines.connect(discipline, {
+                    **lesson
+                })
 
-            for i in interests:
-                interest = Interest.nodes.get_or_none(name=i.content)
-                if not interest:
-                    interest = Interest(name=i.content).save()
-                employee.interests.connect(interest)
+        for d in degrees:
+            degree = Degree.nodes.get_or_none(content=d['content'])
+            if not degree:
+                degree = Degree(content=d['content']).save()
+            employee.degrees.connect(degree)
 
-            for p in publications:
-                publication = Publication.nodes.get_or_none(name=p.content)
-                if not publication:
-                    publication = Publication(name=p.content).save()
-                employee.publications.connect(publication)
+        for i in interests:
+            interest = Interest.nodes.get_or_none(content=i['content'])
+            if not interest:
+                interest = Interest(content=i['content']).save()
+            employee.interests.connect(interest)
 
-            return "success", 200
-        except Exception as e:
-            return e, 200
+        for p in publications:
+            publication = Publication.nodes.get_or_none(content=p['content'])
+            if not publication:
+                publication = Publication(content=p['content']).save()
+            employee.publications.connect(publication)
+
+        return "success", 200
 
 
 class EmployeeView(Resource):

@@ -4,8 +4,17 @@ import os
 from neomodel import (
     config,
     db,
-    clear_neo4j_database
+    clear_neo4j_database,
+    install_labels
 )
+
+from uemployees.department.models import Department, WorkAtDepartment
+from uemployees.faculty.models import Faculty
+from uemployees.employee.models import Employee, TeachDiscipline
+from uemployees.discipline.models import Discipline
+from uemployees.degree.models import Degree
+from uemployees.interest.models import Interest
+from uemployees.publication.models import Publication
 
 
 def init_db():
@@ -13,6 +22,16 @@ def init_db():
 
     # waiting until neo4j initialized
     time.sleep(15)
+
+    install_labels(Department)
+    install_labels(WorkAtDepartment)
+    install_labels(Faculty)
+    install_labels(Employee)
+    install_labels(TeachDiscipline)
+    install_labels(Discipline)
+    install_labels(Degree)
+    install_labels(Interest)
+    install_labels(Publication)
 
     # clear db
     clear_neo4j_database(db)
