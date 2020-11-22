@@ -60,6 +60,14 @@ app.get ('/current/schedule/id', function (req, res) {
     res.send(currentDisciplineId);
 });
 
+app.get ('/adding_employee', function (req,res) {
+   res.render('html/adding_employee.html');
+});
+
+app.get ('/search', function (req, res) {
+    res.render('html/search.html');
+});
+
 app.get('/header.html', function(req, res){
     res.render('html/header.html');
 });
