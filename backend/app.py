@@ -34,9 +34,8 @@ api.add_resource(EmployeeScheduleView, '/employees/<employee_id>/schedule/')
 api.add_resource(EmployeeView, '/employees/<employee_id>/')
 api.add_resource(EmployeeListView, '/employees/')
 
-api.add_resource(ParamsSearchView, '/searchparams')
-api.add_resource(SearchView, '/search')
-
+api.add_resource(ParamsSearchView, '/searchparams/')
+api.add_resource(SearchView, '/search/')
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0')
