@@ -89,9 +89,9 @@ class EmployeeListView(Resource):
 
     def post(self):
         name = request.json.get('name')
-        email = request.json.get('email')
-        education = request.json.get('education')
-        job_title = request.json.get('job_title')
+        email = request.json.get('email') or ""
+        education = request.json.get('education') or ""
+        job_title = request.json.get('job_title') or ""
         disciplines = request.json.get('disciplines')
         degrees = request.json.get('degrees')
         interests = request.json.get('interests')
@@ -106,7 +106,13 @@ class EmployeeListView(Resource):
         )
         employee.save()
 
-        department = Department.get_or_none(name=department)
+        department = Department.nodes.get_or_none(name=department)
+
+        if not department:
+            return {
+                       "error": "Department doesn't exist"
+                   }, 400
+
         department.employees.connect(employee, {
             'job_title': job_title
         })
@@ -138,7 +144,27 @@ class EmployeeListView(Resource):
                 publication = Publication(content=p['content']).save()
             employee.publications.connect(publication)
 
-        return "success", 200
+        response = {
+            **employee.__properties__,
+            'job_title': department.employees.relationship(employee).job_title,
+            'disciplines': [
+                {
+                    'discipline': discipline.__properties__,
+                    'lessons': getLessons(employee.id, discipline.id)
+                } for discipline in getUniqueDisciplines(employee.disciplines.all())
+            ],
+            'degrees': [
+                degree.__properties__ for degree in employee.degrees.all()
+            ],
+            'interests': [
+                interest.__properties__ for interest in employee.interests.all()
+            ],
+            'publications': [
+                publication.__properties__ for publication in employee.publications.all()
+            ],
+        }
+
+        return response
 
 
 class EmployeeView(Resource):
@@ -179,6 +205,91 @@ class EmployeeView(Resource):
 
         return response
 
+    def put(self, employee_id):
+        name = request.json.get('name')
+        email = request.json.get('email')
+        education = request.json.get('education')
+        job_title = request.json.get('job_title')
+        disciplines = request.json.get('disciplines')
+        degrees = request.json.get('degrees')
+        interests = request.json.get('interests')
+        publications = request.json.get('publications')
+
+        try:
+            employee = Employee(id=int(employee_id))
+            employee.refresh()
+        except Exception:
+            return {
+                       "error": "Employee not found"
+                   }, 400
+
+        employee.name = name or employee.name
+        employee.email = email or employee.email
+        employee.education = education or employee.education
+        employee.save()
+
+        department = employee.department.all()[0]
+
+        rel_employee = employee.department.relationship(department)
+        rel_employee.job_title = job_title or rel_employee.job_title
+        rel_employee.save()
+
+        if disciplines:
+            db.cypher_query(f"MATCH (e:Employee)-[rel]-(d:Discipline) WHERE id(e)={employee.id} DELETE rel;")
+            for d in disciplines:
+                discipline = Discipline.nodes.get_or_none(name=d['discipline']['name'])
+                if not discipline:
+                    discipline = Discipline(name=d['discipline']['name']).save()
+                for lesson in d['lessons']:
+                    employee.disciplines.connect(discipline, {
+                        **lesson
+                    })
+
+        if degrees:
+            db.cypher_query(f"MATCH (e:Employee)-[rel]-(d:Degree) WHERE id(e)={employee.id} DELETE rel;")
+            for d in degrees:
+                degree = Degree.nodes.get_or_none(content=d['content'])
+                if not degree:
+                    degree = Degree(content=d['content']).save()
+                employee.degrees.connect(degree)
+
+        if interests:
+            db.cypher_query(f"MATCH (e:Employee)-[rel]-(i:Interest) WHERE id(e)={employee.id} DELETE rel;")
+            for i in interests:
+                interest = Interest.nodes.get_or_none(content=i['content'])
+                if not interest:
+                    interest = Interest(content=i['content']).save()
+                employee.interests.connect(interest)
+
+        if publications:
+            db.cypher_query(f"MATCH (e:Employee)-[rel]-(p:Publication) WHERE id(e)={employee.id} DELETE rel;")
+            for p in publications:
+                publication = Publication.nodes.get_or_none(content=p['content'])
+                if not publication:
+                    publication = Publication(content=p['content']).save()
+                employee.publications.connect(publication)
+
+        response = {
+            **employee.__properties__,
+            'job_title': department.employees.relationship(employee).job_title,
+            'disciplines': [
+                {
+                    'discipline': discipline.__properties__,
+                    'lessons': getLessons(employee.id, discipline.id)
+                } for discipline in getUniqueDisciplines(employee.disciplines.all())
+            ],
+            'degrees': [
+                degree.__properties__ for degree in employee.degrees.all()
+            ],
+            'interests': [
+                interest.__properties__ for interest in employee.interests.all()
+            ],
+            'publications': [
+                publication.__properties__ for publication in employee.publications.all()
+            ],
+        }
+
+        return response
 
 class EmployeeScheduleView(Resource):
     def get(self, employee_id):
