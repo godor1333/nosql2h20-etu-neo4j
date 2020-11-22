@@ -52,3 +52,7 @@ button:hover{
     border-radius: 50px;
     height: 100px;
 }
+
+a:hover{
+    text-decoration: none;
+}
