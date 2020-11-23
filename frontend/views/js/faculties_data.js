@@ -1,8 +1,11 @@
 var xhr = new XMLHttpRequest();
 
-var serverUrl = "http://" + window.location.hostname + ":8000";
-var frontendUrl = "http://" + window.location.hostname + ":3000";
-
+var serverUrl;
+if (navigator.platform.toLowerCase().includes("win")) {
+    serverUrl = "http://192.168.99.101:8000";
+} else {
+    serverUrl = "http://127.0.0.1:8000";
+}
 
 xhr.open('GET', serverUrl.concat('/departments/'), false);
 xhr.setRequestHeader("Access-Control-Allow-Origin", "*");

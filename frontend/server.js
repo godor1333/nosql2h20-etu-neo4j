@@ -68,6 +68,10 @@ app.get ('/search', function (req, res) {
     res.render('html/search.html');
 });
 
+app.get ('/import', function (req, res) {
+    res.render('html/import.html');
+});
+
 app.get('/header.html', function(req, res){
     res.render('html/header.html');
 });
