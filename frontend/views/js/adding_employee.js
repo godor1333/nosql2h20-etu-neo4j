@@ -1,5 +1,20 @@
 let request = {};
 
+var serverUrl;
+var frontendUrl = "http://127.0.0.1:3000";
+if (navigator.platform.toLowerCase().includes("win")) {
+    serverUrl = "http://192.168.99.101:8000";
+} else {
+    serverUrl = "http://127.0.0.1:8000";
+}
+
+xhr.open('GET', frontendUrl.concat('/current/department/name'), false);
+xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+xhr.setRequestHeader("Access-Control-Allow-Methods", "*");
+xhr.send();
+
+var currentDepartmentsName = xhr.responseText;
+
 function addField() {
     var publications = document.getElementById("publications");
     var publicationInput = document.createElement("input");
@@ -11,6 +26,9 @@ function addField() {
 
 function save() {
     request = {};
+    request.department = {};
+    request.department.name = currentDepartmentsName;
+
     var name = document.getElementById("name");
     request.name = name.value;
 
@@ -18,7 +36,7 @@ function save() {
     request.job_title = job_title.value;
 
     var academicDegree = document.getElementById("academic_degree");
-    request.degree = academicDegree.value;
+    request.degree = academicDegree.value.split(", ");
 
     var email = document.getElementById("email");
     request.email = email.value;
