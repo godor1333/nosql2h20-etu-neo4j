@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Поиск по преподавателям</title>
+    <script crossorigin="anonymous" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/search.css">
+</head>
+<body>
+    <div id="header"></div>
+    <script src="../js/header.js"></script>
+    <h2>Поиск по преподавателям</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <h5>Факультет</h5>
+                <h5>Кафедра</h5>
+                <h5>Должность</h5>
+                <h5>Ученая степень</h5>
+                <button onclick="search()">Применить</button>
+            </div>
+            <div class="col-3">
+                <select id="faculties">
+                    <option> Не выбран </option>
+                </select>
+                <select id="department">
+                    <option> Не выбрана </option>
+                </select>
+                <select id="position">
+                    <option> Не выбрана </option>
+                </select>
+                <select id="academic_degree">
+                    <option> Не выбрана </option>
+                </select>
+            </div>
+            <div class="col-7">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">ФИО</th>
+                        <th scope="col">Факультет</th>
+                        <th scope="col">Кафедра</th>
+                        <th scope="col">Должность</th>
+                        <th scope="col">Ученая степень</th>
+                    </tr>
+                    </thead>
+                    <tbody id="search_response">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script src="../js/search_data.js"></script>
+</body>
+</html>

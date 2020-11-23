@@ -17,20 +17,15 @@
                 <h5>Фамилия Имя Отчество</h5>
             </div>
             <div class="col-7">
-                <input type="text" placeholder="ФИО">
+                <input id="name" type="text" placeholder="ФИО">
             </div>
         </div>
         <div class="row">
             <div class="col-5">
                 <h5>Должность</h5>
             </div>
-            <div class="col-6">
-                <input type="text" placeholder="Должность">
-            </div>
-            <div class="col-1">
-                <a href="#">
-                    <img src="https://img.icons8.com/android/24/000000/plus.png"/>
-                </a>
+            <div class="col-7">
+                <input id="position" type="text" placeholder="Должность">
             </div>
         </div>
         <div class="row">
@@ -38,7 +33,7 @@
                 <h5>Ученая степень</h5>
             </div>
             <div class="col-7">
-                <input type="text" placeholder="Ученая степень">
+                <input id="academic_degree" type="text" placeholder="Ученая степень">
             </div>
         </div>
         <div class="row">
@@ -46,23 +41,25 @@
                 <h5>Email</h5>
             </div>
             <div class="col-7">
-                <input type="email" placeholder="Email">
+                <input id="email" type="email" placeholder="Email">
             </div>
         </div>
-        <div class="row">
-            <div class="col-5">
-                <h5>Преподаваемые дисциплины</h5>
-            </div>
-            <div class="col-4">
-                <input type="text" placeholder="Название" style="width: 110%">
-            </div>
-            <div class="col-2">
-                <button class="schedule">Расписание</button>
-            </div>
-            <div class="col-1">
-                <a href="#">
-                    <img src="https://img.icons8.com/android/24/000000/plus.png"/>
-                </a>
+        <div id="scheduleDisc">
+            <div class="row">
+                <div class="col-5">
+                    <h5>Преподаваемые дисциплины</h5>
+                </div>
+                <div class="disciplines col-4">
+                    <input class="disciplineName" type="text" placeholder="Название" style="width: 110%">
+                </div>
+                <div class="col-2">
+                    <button onclick="addScheduleForDiscipline(this)" class="schedule">Расписание</button>
+                </div>
+                <div class="col-1">
+                    <a onclick="addSchedule()" href="#">
+                        <img src="https://img.icons8.com/android/24/000000/plus.png"/>
+                    </a>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -70,7 +67,7 @@
                 <h5>Образование</h5>
             </div>
             <div class="col-7">
-                <input type="text" placeholder="Образование">
+                <input id="education" type="text" placeholder="Образование">
             </div>
         </div>
         <div class="row">
@@ -78,15 +75,20 @@
                 <h5>Область профессиональных интересов</h5>
             </div>
             <div class="col-7">
-                <input type="text" placeholder="Область профессиональных интересов">
+                <input id="interests" type="text" placeholder="Область профессиональных интересов">
             </div>
         </div>
         <div class="row">
             <div class="col-5">
                 <h5>Публикации</h5>
             </div>
-            <div class="col-7">
-                <input type="text" placeholder="Публикации">
+            <div id="publications" class="col-6">
+                <input class="publication" type="text" placeholder="Публикация">
+            </div>
+            <div class="col-1">
+                <a onclick="addField()" href="#">
+                    <img src="https://img.icons8.com/android/24/000000/plus.png"/>
+                </a>
             </div>
         </div>
         <div class="row">
@@ -116,9 +118,11 @@
                         <button class="delete">Удалить</button>
                     </div>
                     <div class="col-2">
-                        <button class="save">Сохранить</button>
+                        <button onclick="save()" class="save">Сохранить</button>
                     </div>
         </div>
     </div>
+
+    <script src="../js/adding_employee.js"></script>
 </body>
 </html>
