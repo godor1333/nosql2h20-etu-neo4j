@@ -7,17 +7,21 @@ from neomodel import (
     clear_neo4j_database
 )
 
+from uemployees.contrib.excel_parser import csvFromExcelParser
+
 
 def init_db():
     config.DATABASE_URL = 'bolt://neo4j:@neo4j:7687'
 
-    # waiting until neo4j initialized
-    time.sleep(40)
 
+def load_db_data(file_name=None):
     # clear db
     clear_neo4j_database(db)
     for constraint in db.cypher_query("CALL db.constraints")[0]:
         db.cypher_query(f'DROP CONSTRAINT {constraint[0]};')
+
+    if file_name:
+        csvFromExcelParser(file_name)
 
     base_dir = os.path.dirname(os.path.dirname(__file__))
     db_file = os.path.join(base_dir, 'db_data.txt')
