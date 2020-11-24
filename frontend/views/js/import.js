@@ -1,10 +1,5 @@
-var serverUrl;
-var frontendUrl = "http://127.0.0.1:3000";
-if (navigator.platform.toLowerCase().includes("win")) {
-    serverUrl = "http://192.168.99.101:8000";
-} else {
-    serverUrl = "http://127.0.0.1:8000";
-}
+var serverUrl = "http://" + window.location.hostname + ":8000";
+var frontendUrl = "http://" + window.location.hostname + ":3000";
 
 var form = document.forms.namedItem("fileinfo");
 form.addEventListener('submit', function(ev) {
@@ -22,3 +17,7 @@ form.addEventListener('submit', function(ev) {
     oReq.send(oData);
     ev.preventDefault();
 }, false);
+
+function exportFile() {
+    window.location.replace(serverUrl.concat('/export_document/'));
+}

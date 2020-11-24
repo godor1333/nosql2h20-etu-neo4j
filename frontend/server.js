@@ -42,6 +42,10 @@ app.get('/employee', function (req, res) {
     res.render('html/employee.html');
 });
 
+app.get('/update_employee', function (req, res) {
+    res.render('html/update_employee.html');
+});
+
 app.get('/current/employee/name', function (req, res) {
     res.send(currentEmployeeName);
 });
@@ -70,6 +74,10 @@ app.get ('/search', function (req, res) {
 
 app.get ('/import', function (req, res) {
     res.render('html/import.html');
+});
+
+app.get ('/statistic', function (req, res) {
+    res.render('html/statistic.html');
 });
 
 app.get('/header.html', function(req, res){

@@ -1,12 +1,7 @@
 var xhr = new XMLHttpRequest();
 
-var serverUrl;
-var frontendUrl = "http://127.0.0.1:3000";
-if (navigator.platform.toLowerCase().includes("win")) {
-    serverUrl = "http://192.168.99.101:8000";
-} else {
-    serverUrl = "http://127.0.0.1:8000";
-}
+var serverUrl = "http://" + window.location.hostname + ":8000";
+var frontendUrl = "http://" + window.location.hostname + ":3000";
 
 xhr.open('GET', serverUrl.concat("/searchparams/"), false);
 xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
@@ -68,23 +63,46 @@ function search() {
     if (selectDegree.selectedIndex > 0) {
         degreeId = data.degrees[selectDegree.selectedIndex - 1].id;
     }
+    var isExist = false;
 
     var url = serverUrl.concat("/search/");
     if (facultyId != null) {
-        url = url.concat("?faculty_id=").concat(facultyId);
+        if (!isExist) {
+            url = url.concat("?");
+            isExist = true;
+        }
+        url = url.concat("faculty_id=").concat(facultyId);
     }
 
     if (departmentId != null) {
+        if (!isExist) {
+            url = url.concat("?");
+            isExist = true;
+        } else {
+            url = url.concat("&");
+        }
         console.log(data.departments[departmentId]);
-        url = url.concat("&department_id=").concat(departmentId);
+        url = url.concat("department_id=").concat(departmentId);
     }
 
     if (jobTitle != null) {
-        url = url.concat("&job_title=").concat(jobTitle);
+        if (!isExist) {
+            url = url.concat("?");
+            isExist = true;
+        } else {
+            url = url.concat("&");
+        }
+        url = url.concat("job_title=").concat(jobTitle);
     }
 
     if (degreeId != null) {
-        url = url.concat("&degree_id=").concat(degreeId);
+        if (!isExist) {
+            url = url.concat("?");
+            isExist = true;
+        } else {
+            url = url.concat("&");
+        }
+        url = url.concat("degree_id=").concat(degreeId);
     }
 
     xhr.open(
