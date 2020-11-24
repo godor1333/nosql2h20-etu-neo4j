@@ -4,7 +4,8 @@ import os
 from neomodel import (
     config,
     db,
-    clear_neo4j_database
+    clear_neo4j_database,
+    install_labels
 )
 
 from uemployees.contrib.excel_parser import csvFromExcelParser
