@@ -6,15 +6,9 @@ from uemployees.db import init_db
 from uemployees.faculty.views import FacultyView
 from uemployees.department.views import DepartmentView
 from uemployees.export.views import ExportView
-from uemployees.employee.views import (
-    EmployeeListView,
-    EmployeeView,
-    EmployeeScheduleView
-)
-from uemployees.search.views import (
-    SearchView,
-    ParamsSearchView
-)
+from uemployees.employee.views import (EmployeeListView, EmployeeView, EmployeeScheduleView)
+from uemployees.search.views import (SearchView, ParamsSearchView)
+from uemployees.statistic.views import (StatisticView, ParamsStatisticView)
 
 
 init_db()
@@ -36,6 +30,9 @@ api.add_resource(EmployeeListView, '/employees/')
 
 api.add_resource(ParamsSearchView, '/searchparams/')
 api.add_resource(SearchView, '/search/')
+
+api.add_resource(ParamsStatisticView, '/statisticparams/')
+api.add_resource(StatisticView, '/statistic/')
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0')

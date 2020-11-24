@@ -12,7 +12,7 @@ def init_db():
     config.DATABASE_URL = 'bolt://neo4j:@neo4j:7687'
 
     # waiting until neo4j initialized
-    time.sleep(40)
+    time.sleep(20)
 
     # clear db
     clear_neo4j_database(db)
