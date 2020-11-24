@@ -1,7 +1,7 @@
 import os
 
 from flask_restful import Resource
-from flask import send_file
+from flask import send_file, request
 from neomodel import db
 from openpyxl import Workbook
 
@@ -10,6 +10,8 @@ from uemployees.department.models import Department
 from uemployees.employee.models import Employee
 from uemployees.degree.models import Degree
 from uemployees.discipline.models import Discipline
+from uemployees.contrib.excel_parser import csvFromExcelParser
+from uemployees.db import load_db_data
 
 
 def createFacultySheet(wb):
@@ -206,5 +208,38 @@ class ExportView(Resource):
         response.headers["Content-Length"] = os.path.getsize(file_path)
         response.headers["Content-Disposition"] = "attachment; filename={}".format(file_name)
         response.headers["Content-Type"] = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+
+        return response
+
+
+class ImportView(Resource):
+    def post(self):
+        try:
+            file = request.files['import_document']
+            if file.filename.split('.')[-1] != 'xlsx':
+                return '', 400
+            file_dst = os.path.abspath(f'tmp/import_document.xlsx')
+            file.save(file_dst)
+            csvFromExcelParser(file_dst)
+            load_db_data()
+            return 'success', 200
+        except:
+            return '', 400
+
+
+class GetCSVView(Resource):
+    def get(self, file_name):
+        file_path = f'tmp/{file_name}'
+
+        response = send_file(
+            file_path,
+            as_attachment=True,
+            attachment_filename=file_name,
+            mimetype='application/csv',
+            cache_timeout=0
+        )
+
+        response.headers["Content-Length"] = os.path.getsize(file_path)
+        response.headers["Content-Type"] = "application/csv"
 
         return response

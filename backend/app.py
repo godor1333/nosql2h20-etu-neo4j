@@ -1,17 +1,18 @@
+import threading
+import time
+
 from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS, cross_origin
 
-from uemployees.db import init_db
+from uemployees.db import ( init_db,load_db_data)
 from uemployees.faculty.views import FacultyView
 from uemployees.department.views import DepartmentView
-from uemployees.export.views import ExportView
+from uemployees.import_export.views import (ExportView,ImportView,GetCSVView)
 from uemployees.employee.views import (EmployeeListView, EmployeeView, EmployeeScheduleView)
-from uemployees.search.views import (SearchView, ParamsSearchView)
+from uemployees.search.views import (SearchView,ParamsSearchView)
+from uemployees.export.views import ExportView
 from uemployees.statistic.views import (StatisticView, ParamsStatisticView)
-
-
-init_db()
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -20,16 +21,26 @@ app.config['BUNDLE_ERRORS'] = True
 
 api = Api(app)
 
+# waiting db initialization
+time.sleep(30)
+
+init_db()
+threading.Timer(10, load_db_data, args=['etu-neo4j.xlsx']).start()
 
 api.add_resource(FacultyView, '/faculties/')
 api.add_resource(DepartmentView, '/departments/')
 api.add_resource(ExportView, '/export_document/')
+api.add_resource(ImportView, '/import_document/')
 api.add_resource(EmployeeScheduleView, '/employees/<employee_id>/schedule/')
 api.add_resource(EmployeeView, '/employees/<employee_id>/')
 api.add_resource(EmployeeListView, '/employees/')
 
-api.add_resource(ParamsSearchView, '/searchparams/')
-api.add_resource(SearchView, '/search/')
+api.add_resource(ParamsSearchView, '/searchparams')
+api.add_resource(SearchView, '/search')
+
+# For internal usage
+api.add_resource(GetCSVView, '/import/<file_name>')
+
 
 api.add_resource(ParamsStatisticView, '/statisticparams/')
 api.add_resource(StatisticView, '/statistic/')
