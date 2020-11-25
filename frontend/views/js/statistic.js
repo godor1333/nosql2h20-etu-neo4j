@@ -94,8 +94,8 @@ function getStatistic() {
     var statisticResponse=JSON.parse(xhr.responseText);
     console.log(statisticResponse);
 
-    var labelEl = [""];
-    var dataEl = [0];
+    var labelEl = [];
+    var dataEl = [];
     for (let i = 0; i < statisticResponse.length; ++i) {
         labelEl.push(statisticResponse[i].x);
         dataEl.push(statisticResponse[i].y);
