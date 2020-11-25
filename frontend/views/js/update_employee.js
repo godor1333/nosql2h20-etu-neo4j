@@ -1,8 +1,15 @@
 var xhr = new XMLHttpRequest();
-let request = {};
 
 var serverUrl = "http://" + window.location.hostname + ":8000";
 var frontendUrl = "http://" + window.location.hostname + ":3000";
+
+xhr.open('GET', frontendUrl.concat('/current/employee/id'), false);
+xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+xhr.setRequestHeader("Access-Control-Allow-Methods", "*");
+xhr.send();
+
+var currentEmployeeId = xhr.responseText;
+console.log(currentEmployeeId);
 
 xhr.open('GET', frontendUrl.concat('/current/department/name'), false);
 xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
@@ -11,6 +18,7 @@ xhr.send();
 
 var currentDepartmentsName = xhr.responseText;
 
+
 xhr.open('GET', frontendUrl.concat('/current/department/id'), false);
 xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
 xhr.setRequestHeader("Access-Control-Allow-Methods", "*");
@@ -18,13 +26,145 @@ xhr.send();
 
 var currentDepartmentId = xhr.responseText;
 
-function addField() {
-    var publications = document.getElementById("publications");
-    var publicationInput = document.createElement("input");
-    publicationInput.classList.add("publicationChild");
-    publicationInput.type = "text";
-    publicationInput.placeholder = "Публикация";
-    publications.appendChild(publicationInput);
+
+xhr.open(
+    'GET',
+    serverUrl.concat("/employees/")
+        .concat(currentEmployeeId)
+        .concat("/?department_id=")
+        .concat(currentDepartmentId),
+    false
+);
+xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+xhr.setRequestHeader("Access-Control-Allow-Methods", "*");
+xhr.send();
+
+var data=JSON.parse(xhr.responseText);
+
+console.log(data);
+var emplName = document.getElementById("name");
+emplName.value = data.name;
+
+var emplPosition = document.getElementById("position");
+emplPosition.value = data.job_title;
+
+var degrees = data.degrees;
+var degreesString = "";
+for (let i = 0; i < degrees.length; ++i) {
+    if (i != (degrees.length - 1)) {
+        degreesString += degrees[i].content + ", ";
+    } else {
+        degreesString += degrees[i].content;
+    }
+}
+var degreeField = document.getElementById("academic_degree");
+degreeField.value = degreesString;
+
+var emailField = document.getElementById("email");
+emailField.value = data.email;
+
+var disciplinesField = document.getElementById("disciplinesField");
+for (let i = 0; i < data.disciplines.length; ++i) {
+    var row = document.createElement("div");
+    row.classList.add("row");
+    disciplinesField.appendChild(row);
+
+    var headerField = document.createElement("div");
+    headerField.classList.add("col-5");
+    row.appendChild(headerField);
+    if (i === 0) {
+        var h5El = document.createElement("h5");
+        h5El.innerText = "Преподаваемые дисциплины";
+        headerField.appendChild(h5El);
+    }
+    var discName = document.createElement("div");
+    discName.classList.add("disciplines", "col-4");
+    row.appendChild(discName);
+
+    var discNameInput = document.createElement("input");
+    discNameInput.classList.add("disciplineName");
+    discNameInput.type = "text";
+    discNameInput.placeholder = "Название";
+    discNameInput.style = "width: 110%";
+    discNameInput.value = data.disciplines[i].discipline.name;
+    discName.appendChild(discNameInput);
+
+    var col2 = document.createElement("div");
+    col2.classList.add("col-2");
+    row.appendChild(col2);
+
+    var addLessons = document.createElement("button");
+    addLessons.setAttribute("onclick", "addScheduleForDiscipline(this)");
+    addLessons.classList.add("schedule");
+    addLessons.innerText = "Расписание";
+    col2.appendChild(addLessons);
+
+    var col1 = document.createElement("div");
+    col1.classList.add("col-1");
+    row.appendChild(col1);
+    if (i === 0) {
+        var plusLink = document.createElement("a");
+        plusLink.href = "#";
+        plusLink.setAttribute("onclick", "addSchedule()");
+        col1.appendChild(plusLink);
+
+        var plusImg = document.createElement("img");
+        plusImg.src = "https://img.icons8.com/android/24/000000/plus.png";
+        plusLink.appendChild(plusImg);
+    }
+
+    for (let j = 0; j < data.disciplines[i].lessons.length; ++j) {
+        var scheduleEl = document.createElement("div");
+        scheduleEl.classList.add("row");
+        discName.appendChild(scheduleEl);
+
+        var groupEl = document.createElement("div");
+        groupEl.classList.add("col-3");
+        scheduleEl.appendChild(groupEl);
+
+        var groupInput = document.createElement("input");
+        groupInput.placeholder = "Группа";
+        groupInput.type = "text";
+        groupInput.classList.add("group");
+        groupInput.value = data.disciplines[i].lessons[j].group;
+        groupEl.appendChild(groupInput);
+
+        var timeEl = document.createElement("div");
+        timeEl.classList.add("col-6");
+        scheduleEl.appendChild(timeEl);
+
+        var timeInput = document.createElement("input");
+        timeInput.placeholder = "Время";
+        timeInput.type = "text";
+        timeInput.classList.add("time");
+        timeInput.value = data.disciplines[i].lessons[j].time;
+        timeEl.appendChild(timeInput);
+
+        var audienceEl = document.createElement("div");
+        audienceEl.classList.add("col-3");
+        scheduleEl.appendChild(audienceEl);
+
+        var audienceInput = document.createElement("input");
+        audienceInput.placeholder = "Аудитория";
+        audienceInput.type = "text";
+        audienceInput.classList.add("audience");
+        audienceInput.value = data.disciplines[i].lessons[j].auditorium;
+        audienceEl.appendChild(audienceInput);
+    }
+}
+
+var educationField = document.getElementById("education");
+educationField.value = data.education;
+
+for (let i = 0; i < data.publications.length; ++i) {
+    if (i > 0) {
+        addField();
+        publication = document.getElementsByClassName("publicationChild");
+        publication[i - 1].value = data.publications[i].content;
+    } else {
+        publication = document.getElementsByClassName("publication");
+        publication[0].value = data.publications[0].content;
+    }
 }
 
 function save() {
@@ -99,8 +239,10 @@ function save() {
     }
     request.publications = requestPublications;
 
+    console.log(request);
+
     var xhr = new XMLHttpRequest();
-    xhr.open('POST', serverUrl.concat('/employees/'), false);
+    xhr.open('PUT', serverUrl.concat('/employees/').concat(currentEmployeeId).concat("/"), false);
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
     xhr.setRequestHeader("Access-Control-Allow-Methods", "*");
@@ -121,6 +263,7 @@ function save() {
 
 function addSchedule() {
     var scheduling = document.getElementById("scheduleDisc");
+    console.log(scheduling);
     var newRow = document.createElement("div");
     newRow.classList.add("row");
     scheduling.appendChild(newRow);
@@ -194,4 +337,13 @@ function addScheduleForDiscipline(elem) {
     audienceInput.type = "text";
     audienceInput.classList.add("audience");
     audienceEl.appendChild(audienceInput);
+}
+
+function addField() {
+    var publications = document.getElementById("publications");
+    var publicationInput = document.createElement("input");
+    publicationInput.classList.add("publicationChild");
+    publicationInput.type = "text";
+    publicationInput.placeholder = "Публикация";
+    publications.appendChild(publicationInput);
 }
