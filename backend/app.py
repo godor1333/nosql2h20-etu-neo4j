@@ -25,6 +25,7 @@ from uemployees.search.views import (
     SearchView,
     ParamsSearchView
 )
+from uemployees.search_in_department.views import SearchQueryView
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
@@ -49,6 +50,8 @@ api.add_resource(EmployeeListView, '/employees/')
 
 api.add_resource(ParamsSearchView, '/searchparams/')
 api.add_resource(SearchView, '/search/')
+
+api.add_resource(SearchQueryView, '/searchquery/')
 
 # For internal usage
 api.add_resource(GetCSVView, '/import/<file_name>')
