@@ -33,6 +33,13 @@ for (let i=0; i<data.params.length; i++){
 }
 
 function getStatistic() {
+    var divChart = document.getElementById("divChart");
+    divChart.innerHTML = "";
+    var canvasEl = document.createElement("canvas");
+    canvasEl.id = "chart";
+    canvasEl.width = 600;
+    canvasEl.height = 400;
+    divChart.appendChild(canvasEl);
     var selectFaculties = document.getElementById("faculties");
     var facultyId = null;
     if (selectFaculties.selectedIndex > 0) {
