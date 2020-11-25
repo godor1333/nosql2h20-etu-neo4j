@@ -9,29 +9,29 @@
     <link rel="stylesheet" href="../css/departments.css">
 </head>
 <body>
-    <div id="header"></div>
-    <script src="../js/header.js"></script>
-    <div class="container">
-        <div class="row">
-            <div class="col-6">
-                <h2 class="page_title"></h2>
-            </div>
-            <div class="col-3">
-                <input type="search" placeholder="Поиск" class="search">
-            </div>
-            <div class="col-2">
-                <button class ="filter"> Фильтр </button>
-            </div>
-            <div class="col-1">
-                <button class="addition">
-                    <a href="/adding_employee">
-                        Добавить
-                    </a>
-                </button>
-            </div>
+<div id="header"></div>
+<script src="../js/header.js"></script>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <h2 class="page_title"></h2>
+        </div>
+        <div class="col-3">
+            <input onchange="searchQuery()" id="searchQuery" type="search" placeholder="Поиск" class="search">
+        </div>
+        <div class="col-2">
+            <button class ="filter"> Фильтр </button>
+        </div>
+        <div class="col-1">
+            <button class="addition">
+                <a href="/adding_employee">
+                    Добавить
+                </a>
+            </button>
         </div>
     </div>
-    <div id="content"></div>
-    <script src="../js/departments_data.js"></script>
+</div>
+<div id="content"></div>
+<script src="../js/departments_data.js"></script>
 </body>
 </html>
