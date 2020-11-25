@@ -47,7 +47,7 @@ function getStatistic() {
 
     var selectParams = document.getElementById("param");
     var paramId = null;
-    if (selectDepartments.selectedIndex > 0) {
+    if (selectParams.selectedIndex > 0) {
         paramId = data.params[selectParams.selectedIndex - 1].id
     }
 
