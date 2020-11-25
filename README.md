@@ -4,10 +4,10 @@
 1. ```cd nosql2h20-etu-neo4j```
 1. ```docker-compose build```
 1. ```docker-compose up```
-1. Now service is available at **127.0.0.1:8000**
+1. Now service is available at **127.0.0.1:3000**
 
-For windows docker toolbox:
-1.docker-machine ip default
+При использовании Windows:  
+1. docker-machine ip default  
 Для получения открытого ip адреса виртуальной машины docker, который нужно использовать вместо localhost.
 
 ### Screencast

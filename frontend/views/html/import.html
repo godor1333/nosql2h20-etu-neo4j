@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Импорт и экспорт</title>
+    <script crossorigin="anonymous" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/import.css">
+</head>
+<body>
+    <div id="header"></div>
+    <script src="../js/header.js"></script>
+    <h2>Импорт и экспорт</h2>
+    <div class="container">
+        <div class="col-12">
+            <form enctype="multipart/form-data" method="post" name="fileinfo">
+                <label class="custom-file-upload">
+                    <input name="import_document" type="file" multiple>
+                    Загрузить файл
+                </label>
+                <input type="submit" value="Импорт" />
+            </form>
+        </div>
+        <div class="col-12">
+            <button onclick="exportFile()">Экспорт</button>
+        </div>
+    </div>
+    <script src="../js/import.js "></script>
+</body>
+</html>

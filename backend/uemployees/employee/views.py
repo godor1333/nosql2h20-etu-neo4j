@@ -92,57 +92,65 @@ class EmployeeListView(Resource):
         email = request.json.get('email') or ""
         education = request.json.get('education') or ""
         job_title = request.json.get('job_title') or ""
-        disciplines = request.json.get('disciplines')
-        degrees = request.json.get('degrees')
-        interests = request.json.get('interests')
-        publications = request.json.get('publications')
-        department = request.json.get('department')
+        disciplines = request.json.get('disciplines') or []
+        degrees = request.json.get('degrees') or []
+        interests = request.json.get('interests') or []
+        publications = request.json.get('publications') or []
+        department = request.json.get('department') or []
 
-        employee = Employee(
-            name=name,
-            email=email,
-            education=education,
-            job_title=job_title,
-        )
-        employee.save()
+        db.begin()
+        try:
+            employee = Employee(
+                name=name,
+                email=email,
+                education=education,
+                job_title=job_title,
+            )
+            employee.save()
 
-        department = Department.nodes.get_or_none(name=department)
+            department = Department.nodes.get_or_none(name=department)
 
-        if not department:
+            if not department:
+                return {
+                           "error": "Department doesn't exist"
+                       }, 400
+
+            department.employees.connect(employee, {
+                'job_title': job_title
+            })
+
+            for d in disciplines:
+                discipline = Discipline.nodes.get_or_none(name=d['discipline']['name'])
+                if not discipline:
+                    discipline = Discipline(name=d['discipline']['name']).save()
+                for lesson in d['lessons']:
+                    employee.disciplines.connect(discipline, {
+                        **lesson
+                    })
+
+            for d in degrees:
+                degree = Degree.nodes.get_or_none(content=d['content'])
+                if not degree:
+                    degree = Degree(content=d['content']).save()
+                employee.degrees.connect(degree)
+
+            for i in interests:
+                interest = Interest.nodes.get_or_none(content=i['content'])
+                if not interest:
+                    interest = Interest(content=i['content']).save()
+                employee.interests.connect(interest)
+
+            for p in publications:
+                publication = Publication.nodes.get_or_none(content=p['content'])
+                if not publication:
+                    publication = Publication(content=p['content']).save()
+                employee.publications.connect(publication)
+            db.commit()
+        except Exception as e:
+            db.rollback()
             return {
-                       "error": "Department doesn't exist"
+                       "error": str(e)
                    }, 400
-
-        department.employees.connect(employee, {
-            'job_title': job_title
-        })
-
-        for d in disciplines:
-            discipline = Discipline.nodes.get_or_none(name=d['discipline']['name'])
-            if not discipline:
-                discipline = Discipline(name=d['discipline']['name']).save()
-            for lesson in d['lessons']:
-                employee.disciplines.connect(discipline, {
-                    **lesson
-                })
-
-        for d in degrees:
-            degree = Degree.nodes.get_or_none(content=d['content'])
-            if not degree:
-                degree = Degree(content=d['content']).save()
-            employee.degrees.connect(degree)
-
-        for i in interests:
-            interest = Interest.nodes.get_or_none(content=i['content'])
-            if not interest:
-                interest = Interest(content=i['content']).save()
-            employee.interests.connect(interest)
-
-        for p in publications:
-            publication = Publication.nodes.get_or_none(content=p['content'])
-            if not publication:
-                publication = Publication(content=p['content']).save()
-            employee.publications.connect(publication)
 
         response = {
             **employee.__properties__,
