@@ -5,13 +5,30 @@ from flask import Flask
 from flask_restful import Api
 from flask_cors import CORS, cross_origin
 
-from uemployees.db import (init_db, load_db_data)
+from uemployees.db import (
+    init_db,
+    load_db_data
+)
 from uemployees.faculty.views import FacultyView
 from uemployees.department.views import DepartmentView
-from uemployees.import_export.views import (ExportView, ImportView, GetCSVView)
-from uemployees.employee.views import (EmployeeListView, EmployeeView, EmployeeScheduleView)
-from uemployees.search.views import (SearchView, ParamsSearchView)
-from uemployees.statistic.views import (StatisticView, ParamsStatisticView)
+from uemployees.import_export.views import (
+    ExportView,
+    ImportView,
+    GetCSVView
+)
+from uemployees.employee.views import (
+    EmployeeListView,
+    EmployeeView,
+    EmployeeScheduleView
+)
+from uemployees.search.views import (
+    SearchView,
+    ParamsSearchView
+)
+from uemployees.statistic.views import (
+    StatisticView,
+    ParamsStatisticView
+)
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/*": {"origins": "*"}})
