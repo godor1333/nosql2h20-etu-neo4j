@@ -347,3 +347,18 @@ function addField() {
     publicationInput.placeholder = "Публикация";
     publications.appendChild(publicationInput);
 }
+
+function deleteEmployee() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('DELETE', serverUrl.concat('/employees/').concat(currentEmployeeId).concat("/"), false);
+    xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+    xhr.setRequestHeader("Access-Control-Allow-Methods", "*");
+    xhr.send();
+
+    window.location.replace(frontendUrl.concat('/departments?')
+        .concat("id=")
+        .concat(currentDepartmentId)
+        .concat("&name=")
+        .concat(currentDepartmentsName)
+    );
+}

@@ -10,35 +10,35 @@
     <link rel="stylesheet" href="../css/statistic.css">
 </head>
 <body>
-<div id="header"></div>
-<script src="../js/header.js"></script>
-<h2>Статистика</h2>
-<div class="container">
-    <div class="row">
-        <div class="col-2">
-            <h5>Факультет</h5>
-            <h5>Кафедра</h5>
-            <h5>Параметр</h5>
-            <button onclick="getStatistic()">Применить</button>
-        </div>
-        <div class="col-3">
-            <select id="faculties">
-                <option> Не выбран </option>
-            </select>
-            <select id="department">
-                <option> Не выбрана </option>
-            </select>
-            <select id="param">
-                <option> Не выбран</option>
-            </select>
-        </div>
-        <div id="divChart" class="col-7">
-            <canvas id="chart" width="600" height="400"></canvas>
+    <div id="header"></div>
+    <script src="../js/header.js"></script>
+    <h2>Статистика</h2>
+    <div class="container">
+        <div class="row">
+            <div class="col-2">
+                <h5>Факультет</h5>
+                <h5>Кафедра</h5>
+                <h5>Параметр</h5>
+                <button onclick="getStatistic()">Применить</button>
+            </div>
+            <div class="col-3">
+                <select id="faculties">
+                    <option> Не выбран </option>
+                </select>
+                <select id="department">
+                    <option> Не выбрана </option>
+                </select>
+                <select id="param">
+                    <option> Не выбран</option>
+                </select>
+            </div>
+            <div id="divChart" class="col-7">
+                <canvas id="chart" width="600" height="400"></canvas>
+            </div>
         </div>
     </div>
-</div>
-</div>
-<script src="../js/statistic.js"></script>
+    </div>
+    <script src="../js/statistic.js"></script>
 
 </body>
 </html>
