@@ -25,6 +25,10 @@ from uemployees.search.views import (
     SearchView,
     ParamsSearchView
 )
+from uemployees.statistic.views import (
+    StatisticView,
+    ParamsStatisticView
+)
 from uemployees.search_in_department.views import SearchQueryView
 
 app = Flask(__name__)
@@ -56,6 +60,9 @@ api.add_resource(SearchQueryView, '/searchquery/')
 # For internal usage
 api.add_resource(GetCSVView, '/import/<file_name>')
 
+
+api.add_resource(ParamsStatisticView, '/statisticparams/')
+api.add_resource(StatisticView, '/statistic/')
 
 if __name__ == '__main__':
     app.run(debug=False, host='0.0.0.0')
