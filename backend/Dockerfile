@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED=1
 
 WORKDIR /code
 
-RUN apt-get update && apt-get install -f libgeos-dev
+RUN apt-get update && apt-get install -y libgeos-dev
 
 RUN pip install --upgrade pip
 COPY requirements.txt .
