@@ -299,6 +299,16 @@ class EmployeeView(Resource):
 
         return response
 
+    def delete(self, employee_id):
+        db.cypher_query(
+            f"MATCH (e: Employee) WHERE id(e)={employee_id} "
+            f"MATCH (e)-[:EMPLOYEE_HAS_PUBLICATION]->(p:Publication) "
+            f"DETACH DELETE e,p"
+        )
+
+        return "success"
+
+
 class EmployeeScheduleView(Resource):
     def get(self, employee_id):
 
