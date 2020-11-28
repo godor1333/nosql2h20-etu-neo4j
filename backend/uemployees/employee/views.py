@@ -49,6 +49,124 @@ def getDiscipline(discipline_id):
     return discipline
 
 
+class JobTitleList(Resource):
+    def get(self):
+        rels = [
+            rel[0]
+            for rel in db.cypher_query(
+                f'MATCH ()'
+                f'-[r:WORK_AT_DEPARTMENT]->() '
+                f'RETURN DISTINCT r.job_title;'
+            )[0]
+        ]
+
+        result = []
+
+        for rel in rels:
+            result.append({
+                "job_title": rel
+            })
+
+        return result
+
+
+class DegreeList(Resource):
+    def get(self):
+        rels = [
+            rel[0]
+            for rel in db.cypher_query(
+                f'MATCH ()'
+                f'-[r:EMPLOYEE_HAS_DEGREE]->(d:Degree) '
+                f'RETURN DISTINCT d.content;'
+            )[0]
+        ]
+
+        result = []
+
+        for rel in rels:
+            result.append({
+                "degree": rel
+            })
+
+        return result
+
+
+class DisciplineList(Resource):
+    def get(self):
+        rels = [
+            rel[0]
+            for rel in db.cypher_query(
+                f'MATCH ()'
+                f'-[r:TEACH_A_DISCIPLINE]->(d:Discipline) '
+                f'RETURN DISTINCT d.name;'
+            )[0]
+        ]
+
+        result = []
+
+        for rel in rels:
+            result.append({
+                "discipline": rel
+            })
+
+        return result
+
+
+class EmployeeFilterView(Resource):
+    def get(self):
+        response = []
+
+        args = request.args
+        department_id = args.get('department_id')
+        job_title = args.get('job_title')
+        degree = args.get('degree')
+        discipline = args.get('discipline')
+        email = args.get('email')
+        education = args.get('education')
+        interest = args.get('interest')
+        publication = args.get('publication')
+
+        try:
+            department = Department(id=int(department_id))
+            department.refresh()
+        except Exception:
+            return '', 400
+
+        employees = department.employees.all()
+
+        for employee in employees:
+            if job_title and department.employees.relationship(employee).job_title != job_title or \
+                    degree and degree in [degree.__properties__.content for degree in employee.degrees.all()] or \
+                    discipline and discipline in [discipline.__properties__.name for discipline in getUniqueDisciplines(employee.disciplines.all())] or \
+                    email and email != employee.email or \
+                    education and education != employee.education or \
+                    interest and interest in [interest.__properties__.content for interest in employee.interests.all()] or \
+                    publication and publication in [publication.__properties__.content for publication in employee.publications.all()]:
+                continue
+            else:
+                response.append({
+                    **employee.__properties__,
+                    'job_title': department.employees.relationship(employee).job_title,
+                    'disciplines': [
+                        {
+                            'discipline': discipline.__properties__,
+                            'lessons': getLessons(employee.id, discipline.id)
+                        } for discipline in getUniqueDisciplines(employee.disciplines.all())
+                    ],
+                    'degrees': [
+                        degree.__properties__ for degree in employee.degrees.all()
+                    ],
+                    'interests': [
+                        interest.__properties__ for interest in employee.interests.all()
+                    ],
+                    'publications': [
+                        publication.__properties__ for publication in employee.publications.all()
+                    ],
+                })
+
+        return response
+
+
 class EmployeeListView(Resource):
     def get(self):
         response = []

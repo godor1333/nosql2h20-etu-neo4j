@@ -19,7 +19,11 @@ from uemployees.import_export.views import (
 from uemployees.employee.views import (
     EmployeeListView,
     EmployeeView,
-    EmployeeScheduleView
+    EmployeeScheduleView,
+    JobTitleList,
+    DisciplineList,
+    DegreeList,
+    EmployeeFilterView
 )
 from uemployees.search.views import (
     SearchView,
@@ -39,18 +43,22 @@ app.config['BUNDLE_ERRORS'] = True
 api = Api(app)
 
 # waiting db initialization
-time.sleep(30)
+time.sleep(15)
 
 init_db()
-threading.Timer(10, load_db_data, args=['etu-neo4j.xlsx']).start()
+threading.Timer(3, load_db_data, args=['etu-neo4j.xlsx']).start()
 
 api.add_resource(FacultyView, '/faculties/')
 api.add_resource(DepartmentView, '/departments/')
 api.add_resource(ExportView, '/export_document/')
 api.add_resource(ImportView, '/import_document/')
+api.add_resource(EmployeeFilterView, '/employees/filter')
 api.add_resource(EmployeeScheduleView, '/employees/<employee_id>/schedule/')
 api.add_resource(EmployeeView, '/employees/<employee_id>/')
 api.add_resource(EmployeeListView, '/employees/')
+api.add_resource(JobTitleList, '/job_titles/')
+api.add_resource(DisciplineList, '/disciplines/')
+api.add_resource(DegreeList, '/degrees/')
 
 api.add_resource(ParamsSearchView, '/searchparams/')
 api.add_resource(SearchView, '/search/')
