@@ -173,7 +173,10 @@ function save() {
     var name = document.getElementById("name");
     request.name = name.value;
 
-    request.photo_url = "";
+    var imageUrl = document.getElementById("image_url");
+    console.log(imageUrl.innerText)
+    console.log(imageUrl.value);
+    request.photo_url = imageUrl.value;
 
     var email = document.getElementById("email");
     request.email = email.value;
@@ -346,4 +349,29 @@ function addField() {
     publicationInput.type = "text";
     publicationInput.placeholder = "Публикация";
     publications.appendChild(publicationInput);
+}
+
+function deleteEmployee() {
+    var xhr = new XMLHttpRequest();
+    xhr.open('DELETE', serverUrl.concat('/employees/').concat(currentEmployeeId).concat("/"), false);
+    xhr.setRequestHeader("Access-Control-Allow-Origin", "*");
+    xhr.setRequestHeader("Access-Control-Allow-Methods", "*");
+    xhr.send();
+
+    window.location.replace(frontendUrl.concat('/departments?')
+        .concat("id=")
+        .concat(currentDepartmentId)
+        .concat("&name=")
+        .concat(currentDepartmentsName)
+    );
+}
+
+$(document).ready(function(){
+    PopUpHide();
+});
+function PopUpShow(){
+    $("#popup1").show();
+}
+function PopUpHide(){
+    $("#popup1").hide();
 }

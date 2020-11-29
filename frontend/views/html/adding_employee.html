@@ -9,119 +9,127 @@
     <link rel="stylesheet" href="../css/adding_employee.css">
 </head>
 <body>
-    <div id="header"></div>
-    <script src="../js/header.js"></script>
-    <div class="container content">
+<div id="header"></div>
+<script src="../js/header.js"></script>
+<div class="container content">
+    <div class="row">
+        <div class="col-5">
+            <h5>Фамилия Имя Отчество</h5>
+        </div>
+        <div class="col-7">
+            <input id="name" type="text" placeholder="ФИО">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5">
+            <h5>Должность</h5>
+        </div>
+        <div class="col-7">
+            <input id="position" type="text" placeholder="Должность">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5">
+            <h5>Ученая степень</h5>
+        </div>
+        <div class="col-7">
+            <input id="academic_degree" type="text" placeholder="Ученая степень">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-5">
+            <h5>Email</h5>
+        </div>
+        <div class="col-7">
+            <input id="email" type="email" placeholder="Email">
+        </div>
+    </div>
+    <div id="scheduleDisc">
         <div class="row">
             <div class="col-5">
-                <h5>Фамилия Имя Отчество</h5>
+                <h5>Преподаваемые дисциплины</h5>
             </div>
-            <div class="col-7">
-                <input id="name" type="text" placeholder="ФИО">
+            <div class="disciplines col-4">
+                <input class="disciplineName" type="text" placeholder="Название" style="width: 110%">
             </div>
-        </div>
-        <div class="row">
-            <div class="col-5">
-                <h5>Должность</h5>
-            </div>
-            <div class="col-7">
-                <input id="position" type="text" placeholder="Должность">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-5">
-                <h5>Ученая степень</h5>
-            </div>
-            <div class="col-7">
-                <input id="academic_degree" type="text" placeholder="Ученая степень">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-5">
-                <h5>Email</h5>
-            </div>
-            <div class="col-7">
-                <input id="email" type="email" placeholder="Email">
-            </div>
-        </div>
-        <div id="scheduleDisc">
-            <div class="row">
-                <div class="col-5">
-                    <h5>Преподаваемые дисциплины</h5>
-                </div>
-                <div class="disciplines col-4">
-                    <input class="disciplineName" type="text" placeholder="Название" style="width: 110%">
-                </div>
-                <div class="col-2">
-                    <button onclick="addScheduleForDiscipline(this)" class="schedule">Расписание</button>
-                </div>
-                <div class="col-1">
-                    <a onclick="addSchedule()" href="#">
-                        <img src="https://img.icons8.com/android/24/000000/plus.png"/>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-5">
-                <h5>Образование</h5>
-            </div>
-            <div class="col-7">
-                <input id="education" type="text" placeholder="Образование">
-            </div>
-        </div>
-<!--        <div class="row">-->
-<!--            <div class="col-5">-->
-<!--                <h5>Область профессиональных интересов</h5>-->
-<!--            </div>-->
-<!--            <div class="col-7">-->
-<!--                <input id="interests" type="text" placeholder="Область профессиональных интересов">-->
-<!--            </div>-->
-<!--        </div>-->
-        <div class="row">
-            <div class="col-5">
-                <h5>Публикации</h5>
-            </div>
-            <div id="publications" class="col-6">
-                <input class="publication" type="text" placeholder="Публикация">
+            <div class="col-2">
+                <button onclick="addScheduleForDiscipline(this)" class="schedule">Расписание</button>
             </div>
             <div class="col-1">
-                <a onclick="addField()" href="#">
+                <a onclick="addSchedule()" href="#">
                     <img src="https://img.icons8.com/android/24/000000/plus.png"/>
                 </a>
             </div>
         </div>
-<!--        <div class="row">-->
-<!--            <div class="col-5">-->
-<!--                <h5>Другое</h5>-->
-<!--            </div>-->
-<!--            <div class="col-7">-->
-<!--                <input type="text" placeholder="Другое">-->
-<!--            </div>-->
-<!--        </div>-->
-        <div class="row">
-            <div class="col-6">
-                <div class="row">
-                    <div class="col-1">
-                        <a href="#">
-                            <img src="https://img.icons8.com/metro/26/000000/attach.png"/>
-                        </a>
-                    </div>
-                    <div class="col-5">
-                        <p>Загрузить изображение</p>
-                    </div>
+    </div>
+    <div class="row">
+        <div class="col-5">
+            <h5>Образование</h5>
+        </div>
+        <div class="col-7">
+            <input id="education" type="text" placeholder="Образование">
+        </div>
+    </div>
+    <!--        <div class="row">-->
+    <!--            <div class="col-5">-->
+    <!--                <h5>Область профессиональных интересов</h5>-->
+    <!--            </div>-->
+    <!--            <div class="col-7">-->
+    <!--                <input id="interests" type="text" placeholder="Область профессиональных интересов">-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <div class="row">
+        <div class="col-5">
+            <h5>Публикации</h5>
+        </div>
+        <div id="publications" class="col-6">
+            <input class="publication" type="text" placeholder="Публикация">
+        </div>
+        <div class="col-1">
+            <a onclick="addField()" href="#">
+                <img src="https://img.icons8.com/android/24/000000/plus.png"/>
+            </a>
+        </div>
+    </div>
+    <!--        <div class="row">-->
+    <!--            <div class="col-5">-->
+    <!--                <h5>Другое</h5>-->
+    <!--            </div>-->
+    <!--            <div class="col-7">-->
+    <!--                <input type="text" placeholder="Другое">-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <div class="row">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-1">
+                    <a href="#">
+                        <img onclick="PopUpShow()" src="https://img.icons8.com/metro/26/000000/attach.png"/>
+                    </a>
+                </div>
+                <div class="col-5">
+                    <p>Загрузить изображение</p>
                 </div>
             </div>
         </div>
-        <div class="row">
-                    <div class="col-10">
-                    </div>
-                    <div class="col-2">
-                        <button onclick="save()" class="save">Сохранить</button>
-                    </div>
+    </div>
+    <div class="row">
+        <div class="col-10">
+        </div>
+        <div class="col-2">
+            <button onclick="save()" class="save">Сохранить</button>
         </div>
     </div>
+</div>
 
-    <script src="../js/adding_employee.js"></script>
+
+<div class="b-popup" id="popup1">
+    <div class="b-popup-content">
+        <h5>Прикрепить изображение</h5>
+        <input id="image_url" placeholder="Image url" type="text">
+        <button onclick="PopUpHide()">Применить</button>
+    </div>
+</div>
+<script src="../js/adding_employee.js"></script>
 </body>
 </html>

@@ -33,7 +33,8 @@ function save() {
     var name = document.getElementById("name");
     request.name = name.value;
 
-    request.photo_url = "";
+    var imageUrl = document.getElementById("image_url");
+    request.photo_url = imageUrl.value;
 
     var email = document.getElementById("email");
     request.email = email.value;
@@ -194,4 +195,14 @@ function addScheduleForDiscipline(elem) {
     audienceInput.type = "text";
     audienceInput.classList.add("audience");
     audienceEl.appendChild(audienceInput);
+}
+
+$(document).ready(function(){
+    PopUpHide();
+});
+function PopUpShow(){
+    $("#popup1").show();
+}
+function PopUpHide(){
+    $("#popup1").hide();
 }
