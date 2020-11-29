@@ -5,11 +5,13 @@
     <title>Состав кафедры</title>
 
     <script crossorigin="anonymous" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.0.2.min.js"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel="stylesheet" href="../css/departments.css">
 </head>
 <body>
 <div id="header"></div>
+
 <script src="../js/header.js"></script>
 <div class="container">
     <div class="row">
@@ -20,7 +22,7 @@
             <input onchange="searchQuery()" id="searchQuery" type="search" placeholder="Поиск" class="search">
         </div>
         <div class="col-2">
-            <button class ="filter"> Фильтр </button>
+            <button class ="filter" onclick="PopUpShow()"> Фильтр  </button>
         </div>
         <div class="col-1">
             <button class="addition">
@@ -32,6 +34,47 @@
     </div>
 </div>
 <div id="content"></div>
+<div class="b-popup" id="popup1">
+    <div class="b-popup-content">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <h5>Должность</h5>
+                    <h5>Ученая степень</h5>
+                    <h5>Дисциплина</h5>
+                    <h5>Email</h5>
+                    <h5>Образование</h5>
+                    <h5>Публикации</h5>
+                </div>
+                <div class="col-6">
+                    <select id="job_title_filter">
+                        <option>Не выбрана</option>
+                    </select>
+                    <select id="degree_filter">
+                        <option>Не выбрана</option>
+                    </select>
+                    <select id="disciplines_filter">
+                        <option>Не выбрана</option>
+                    </select>
+                    <input id="email_filter" type="text">
+                    <input id="education_filter" type="text">
+                    <input id="publications_filter" type="text">
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-9">
+                    <button class ="filter" onclick="PopUpHide()"> Закрыть  </button>
+                </div>
+                <div class="col-3">
+                    <button class ="filter" onclick="filterFunction()"> Применить  </button>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
 <script src="../js/departments_data.js"></script>
 </body>
 </html>

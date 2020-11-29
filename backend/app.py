@@ -43,7 +43,7 @@ app.config['BUNDLE_ERRORS'] = True
 api = Api(app)
 
 # waiting db initialization
-time.sleep(15)
+time.sleep(40)
 
 init_db()
 threading.Timer(3, load_db_data, args=['etu-neo4j.xlsx']).start()
