@@ -136,12 +136,12 @@ class EmployeeFilterView(Resource):
 
         for employee in employees:
             if job_title and department.employees.relationship(employee).job_title != job_title or \
-                    degree and degree in [degree.__properties__.content for degree in employee.degrees.all()] or \
-                    discipline and discipline in [discipline.__properties__.name for discipline in getUniqueDisciplines(employee.disciplines.all())] or \
+                    degree and degree in [degree.__properties__['content'] for degree in employee.degrees.all()] or \
+                    discipline and discipline in [discipline.__properties__['name'] for discipline in getUniqueDisciplines(employee.disciplines.all())] or \
                     email and email != employee.email or \
                     education and education != employee.education or \
-                    interest and interest in [interest.__properties__.content for interest in employee.interests.all()] or \
-                    publication and publication in [publication.__properties__.content for publication in employee.publications.all()]:
+                    interest and interest in [interest.__properties__['content'] for interest in employee.interests.all()] or \
+                    publication and publication in [publication.__properties__['content'] for publication in employee.publications.all()]:
                 continue
             else:
                 response.append({
